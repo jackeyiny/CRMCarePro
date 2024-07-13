@@ -178,6 +178,64 @@ const getAllTypeProduct = async (req, res) => {
 }
 
 
+// -----------
+const getSellingProducts = async (req, res) => {
+    try {
+        const response = await productService.getSellingProducts()
+        return res.status(200).json(response)
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+const getNewProducts = async (req, res) => {
+    try {
+        const response = await productService.getNewProducts()
+        return res.status(200).json(response)
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+const getHighestPricedProducts = async (req, res) => {
+    try {
+        const response = await productService.getHighestPricedProducts()
+        return res.status(200).json(response)
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+const getLowestPricedProducts = async (req, res) => {
+    try {
+        const response = await productService.getLowestPricedProducts()
+        return res.status(200).json(response)
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+const getRandomProduct = async (req, res) => {
+    try {
+        const response = await productService.getRandomProduct()
+        return res.status(200).json(response)
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+
 module.exports = {
     createProduct,
     updateProduct,
@@ -185,6 +243,10 @@ module.exports = {
     deleteProduct,
     getAllProduct,
     deleteProductMany,
-    getAllTypeProduct
-
+    getAllTypeProduct,
+    getSellingProducts,
+    getNewProducts, 
+    getHighestPricedProducts, 
+    getRandomProduct,
+    getLowestPricedProducts
 }

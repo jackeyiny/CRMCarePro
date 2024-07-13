@@ -277,7 +277,6 @@ const getAllProduct = (limit, page, sort, filter) => {
     })
 }
 
-
 const getAllTypeProduct = () => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -295,6 +294,94 @@ const getAllTypeProduct = () => {
     })
 }
 
+
+// ------------
+const getSellingProducts = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Lấy 8 sản phẩm bán được nhiều nhất
+            const topSellingProducts = await Product.find().sort({ selled: -1 }).limit(8);
+            
+            resolve({
+                status: 'OK',
+                message: 'Top selling products retrieved successfully',
+                data: topSellingProducts
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+const getNewProducts = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Lấy 8 sản phẩm mới nhất
+            const newProducts = await Product.find().sort({ createdAt: -1 }).limit(8);
+            console.log('newProducts', newProducts)
+            
+            resolve({
+                status: 'OK',
+                message: 'New products retrieved successfully',
+                data: newProducts
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+const getHighestPricedProducts = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Lấy 8 sản phẩm có giá cao nhất
+            const highestPricedProducts = await Product.find().sort({ price: -1 }).limit(8);
+            console.log('highestPricedProducts', highestPricedProducts)
+
+            resolve({
+                status: 'OK',
+                message: 'Highest priced products retrieved successfully',
+                data: highestPricedProducts
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+const getLowestPricedProducts = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Lấy 8 sản phẩm có giá thấp nhất
+            const lowestPricedProducts = await Product.find().sort({ price: 1 }).limit(8);
+            console.log('lowestPricedProducts', lowestPricedProducts)
+
+            resolve({
+                status: 'OK',
+                message: 'Lowest priced products retrieved successfully',
+                data: lowestPricedProducts
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+const getRandomProduct = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Lấy 8 sản phẩm ngẫu nhiên
+            const randomProducts = await Product.aggregate([{ $sample: { size: 8 } }]);
+            console.log('randomProducts', randomProducts)
+
+            resolve({
+                status: 'OK',
+                message: 'Random products retrieved successfully',
+                data: randomProducts
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+   
+
 module.exports = {
     createProduct,
     updateProduct,
@@ -302,5 +389,10 @@ module.exports = {
     deleteProduct,
     getAllProduct,
     deleteProductMany,
-    getAllTypeProduct
+    getAllTypeProduct,
+    getSellingProducts, 
+    getNewProducts, 
+    getHighestPricedProducts, 
+    getRandomProduct,
+    getLowestPricedProducts
 }
