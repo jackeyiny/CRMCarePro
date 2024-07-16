@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser');
 dotenv.config()
 
 const app = express()
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 4000
 
 // chính sách bảo mất của trình duyệt web, tránh tuy cập vào các domain khác nhau nên ta phải khai báo
 // dùng để gửi dữ liệu và nhận dữ liệu từ phía client

@@ -34,7 +34,7 @@ describe('Get User Details API', () => {
         userDetailsRes.body.should.have.property('message').eql('Get Success');
         userDetailsRes.body.should.have.property('data');
 
-        console.log('userDetailsRes', userDetailsRes._body)
+        // console.log('userDetailsRes', userDetailsRes._body)
  
     });
 });

@@ -93,7 +93,7 @@ const EmailService = require("../services/EmailService");
 // }
 
 const createOrder = (newOrder) => {
-    console.log('newOrder', newOrder)
+    // console.log('newOrder', newOrder)
     return new Promise(async (resolve, reject) => {
         const { orderItems, paymentMethod, itemsPrice, shippingPrice, totalPrice, fullName, address, city, phone, user, isPaid, paidAt, email } = newOrder
         try {

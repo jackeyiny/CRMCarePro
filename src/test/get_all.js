@@ -24,6 +24,6 @@ describe('Get All Products API', () => {
         // Lấy dữ liệu sản phẩm từ phản hồi
         const products = getAllProductsRes.body.data;
         // in ra console để kiểm tra dữ liệu nhận về
-        console.log('products', products)
+        // console.log('products', products)
     });
 });

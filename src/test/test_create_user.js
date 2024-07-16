@@ -23,7 +23,7 @@ describe('Create User API', () => {
             res.body.should.be.a('object'); // Kiểm tra kiểu dữ liệu của body
             res.body.should.have.property('status').eql('OK'); // Kiểm tra nội dung phản hồi
             res.body.should.have.property('message').eql('SUCCESS'); // Kiểm tra nội dung phản hồi
-            console.log('res', res._body)
+            // console.log('res', res._body)
             done(); // Kết thúc kiểm tra
         });
     });

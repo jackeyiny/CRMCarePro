@@ -317,7 +317,7 @@ const getNewProducts = () => {
         try {
             // Lấy 8 sản phẩm mới nhất
             const newProducts = await Product.find().sort({ createdAt: -1 }).limit(8);
-            console.log('newProducts', newProducts)
+            // console.log('newProducts', newProducts)
             
             resolve({
                 status: 'OK',
@@ -334,7 +334,7 @@ const getHighestPricedProducts = () => {
         try {
             // Lấy 8 sản phẩm có giá cao nhất
             const highestPricedProducts = await Product.find().sort({ price: -1 }).limit(8);
-            console.log('highestPricedProducts', highestPricedProducts)
+            // console.log('highestPricedProducts', highestPricedProducts)
 
             resolve({
                 status: 'OK',
@@ -351,7 +351,7 @@ const getLowestPricedProducts = () => {
         try {
             // Lấy 8 sản phẩm có giá thấp nhất
             const lowestPricedProducts = await Product.find().sort({ price: 1 }).limit(8);
-            console.log('lowestPricedProducts', lowestPricedProducts)
+            // console.log('lowestPricedProducts', lowestPricedProducts)
 
             resolve({
                 status: 'OK',
@@ -368,7 +368,7 @@ const getRandomProduct = () => {
         try {
             // Lấy 8 sản phẩm ngẫu nhiên
             const randomProducts = await Product.aggregate([{ $sample: { size: 8 } }]);
-            console.log('randomProducts', randomProducts)
+            // console.log('randomProducts', randomProducts)
 
             resolve({
                 status: 'OK',

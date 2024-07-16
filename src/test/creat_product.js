@@ -33,6 +33,6 @@ describe('Create Product API', () => {
 
         // Kiểm tra thông tin của sản phẩm được tạo
         const createdProduct = createProductRes.body.data;
-        console.log('createdProduct', createdProduct)
+        // console.log('createdProduct', createdProduct)
     });
 });

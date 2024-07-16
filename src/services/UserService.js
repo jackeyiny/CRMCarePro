@@ -260,7 +260,7 @@ const checkDetailsUserByEmail = (emailUser) => {
             
             // nếu ko gióng thì in ra thông báo
             if (!user) {
-                console.log('user')
+                // console.log('user')
                 resolve({
                     status: 'ERR',
                     message: 'The user is not defined'
@@ -342,7 +342,7 @@ const ChangePassword = (newChangePassword) => {
                 return;
             }
 
-            console.log('otp', otp, user.otpExpiry)
+            // console.log('otp', otp, user.otpExpiry)
             // Check if OTP matches and OTP is not expired
             if (user.otp !== otp || user.otpExpiry < Date.now()) {
                 resolve({

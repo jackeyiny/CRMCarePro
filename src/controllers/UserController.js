@@ -283,7 +283,7 @@ const checkDetailsUserByEmail = async (req, res) => {
 const checkDetailsUserByOTP = async (req, res) => {
     try {
         const { otp, email } = req.body
-        console.log('result', req.body)
+        // console.log('result', req.body)
 
         // đóng gói dữ liệu cần get và id lấy từ url gửi qua service
         const response = await userService.checkDetailsUserByOTP(req.body)
@@ -301,7 +301,7 @@ const checkDetailsUserByOTP = async (req, res) => {
 const ChangePassword = async (req, res) => {
     try {
         const { otp, email, anewpassword } = req.body
-        console.log('result', req.body)
+        // console.log('result', req.body)
 
         // đóng gói dữ liệu cần get và id lấy từ url gửi qua service
         const response = await userService.ChangePassword(req.body)
