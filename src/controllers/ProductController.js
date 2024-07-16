@@ -163,6 +163,19 @@ const getAllProduct = async (req, res) => {
         })
     }
 }
+const getAllProductType = async (req, res) => {
+    try {
+        const response = await productService.getAllProductType()
+        // sau khi xử lý dữ liệu xong ta chuyển kiểu dữ liệu đã xử lý về --Json-- sau đó trả về
+        return res.status(200).json(response)
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
 
 // lấy toàn bộ thông tin sản phẩm
 const getAllTypeProduct = async (req, res) => {
@@ -248,5 +261,6 @@ module.exports = {
     getNewProducts, 
     getHighestPricedProducts, 
     getRandomProduct,
-    getLowestPricedProducts
+    getLowestPricedProducts,
+    getAllProductType
 }

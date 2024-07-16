@@ -11,6 +11,7 @@ router.get('/getAll', productController.getAllProduct)
 router.delete('/delete/:id', AuthMiddleware, productController.deleteProduct)
 router.post('/delete-many', AuthMiddleware, productController.deleteProductMany)
 router.get('/get-all-type', productController.getAllTypeProduct)
+router.get('/getAllProduct', productController.getAllProductType)
 
 
 router.get('/get-selling-products', productController.getSellingProducts)

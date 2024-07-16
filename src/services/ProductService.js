@@ -276,6 +276,22 @@ const getAllProduct = (limit, page, sort, filter) => {
         }
     })
 }
+const getAllProductType = (limit, page, sort, filter) => {
+    return new Promise(async (resolve, reject) => {
+        try {    
+            const result = await Product.find()
+            
+            resolve({
+                status: 'OK',
+                message: 'getAll allProduct Success',
+                data: result
+            })
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 
 const getAllTypeProduct = () => {
     return new Promise(async (resolve, reject) => {
@@ -394,5 +410,6 @@ module.exports = {
     getNewProducts, 
     getHighestPricedProducts, 
     getRandomProduct,
-    getLowestPricedProducts
+    getLowestPricedProducts,
+    getAllProductType
 }
