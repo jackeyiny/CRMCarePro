@@ -4,12 +4,82 @@ const User = require("../models/UserModel")
 // dùng để giới hạn thời gian đăng nhập hay mấy cái token kiểu làm về bảo mật
 const { genneralAccessToken, genneralRefreshToken } = require("./JwtService")
 
-const { sendOtpEmail } = require("./PasswordRetrievalUser")
+const { sendOtpEmail, sendOtpEmailLogIn } = require("./PasswordRetrievalUser")
+const jwt = require('jsonwebtoken')
+require('dotenv').config();
+const secret = '123123'
 
 // làm như này nó sẽ tự động thêm lên database cho mình
+const checkEmailSignUp = (emailUser) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const { email, name } = emailUser;
+
+            // Kiểm tra xem email đã tồn tại hay chưa
+            const user = await User.findOne({ email: email });
+
+            if (user !== null) {
+                resolve({
+                    status: 'ERR',
+                    message: 'Email already exists'
+                });
+                return;
+            }
+
+            // Tạo mã OTP ngẫu nhiên
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            // Tạo JWT chứa mã OTP có thời hạn 5 phút
+            const token = jwt.sign({ email, otp }, secret, { expiresIn: '5m' });
+
+            // Gửi OTP qua email
+            await sendOtpEmailLogIn(email, otp);
+
+            console.log(`Generated OTP: ${otp}`);
+            resolve({
+                status: 'OK',
+                message: 'OTP sent successfully',
+                token
+            });
+
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+const checkOTPSignUp = (newUser) => {
+    return new Promise(async (resolve, reject) => {
+        const { otp, token, email, name } = newUser;
+        try {
+            const decoded = jwt.verify(token, secret);
+
+            console.log('Decoded OTP:', decoded.otp);
+            console.log('User entered OTP:', otp);
+
+            // Kiểm tra xem OTP có đúng và không hết hạn không
+            if (decoded.otp === otp) {
+                resolve({
+                    status: 'OK',
+                    message: 'OTP verified successfully'
+                });
+            } else {
+                resolve({
+                    status: 'ERR',
+                    message: 'Invalid OTP'
+                });
+            }
+
+        } catch (e) {
+            reject({
+                status: 'ERR',
+                message: 'Token is invalid or expired'
+            });
+        }
+    });
+};
 const createUser = (newUser) => {
     return new Promise(async (resolve, reject) => {
-        const {email, password, confirmPassword} = newUser
+        const {email, password, confirmPassword, token, otp, name} = newUser
         try {
             const checkUser = await User.findOne({
                 email: email
@@ -29,10 +99,26 @@ const createUser = (newUser) => {
             }
             // mã hóa passwork
             // const hash = bcrypt.hashSync(password, 10)
-            // console.log('hash', hash)    
+            // console.log('hash', hash)   
+            
+            const decoded = jwt.verify(token, secret);
+
+            // Kiểm tra xem OTP có đúng và không hết hạn không
+            if (decoded.otp === otp) {
+                resolve({
+                    status: 'OK',
+                    message: 'OTP verified successfully'
+                });
+            } else {
+                resolve({
+                    status: 'ERR',
+                    message: 'Invalid OTP'
+                });
+            }
 
             // viết như này nó sẽ tự động map cái key với cái name với nhau
             const createUser = await User.create({
+                name,
                 email,
                 // mình lưu cái password đã mã hóa vào 
                 password: password, 
@@ -384,5 +470,7 @@ module.exports = {
     deleteUserMany,
     checkDetailsUserByEmail,
     checkDetailsUserByOTP,
-    ChangePassword
+    ChangePassword,
+    checkOTPSignUp,
+    checkEmailSignUp
 }

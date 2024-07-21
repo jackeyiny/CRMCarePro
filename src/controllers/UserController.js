@@ -5,13 +5,78 @@ const JwtService = require('../services/JwtService')
 // nới chuyển dữ liệu từ server qua client thông qua --res--
 
 // thêm User
+const checkEmailSignUp = async (req, res) => {
+    try {
+        const { email, name } = req.body
+
+        // kiểm tra xem có phải là email ko hay là 1 cái String
+        const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+        const isCheckEmail = reg.test(email)
+
+        if (!isCheckEmail) {
+            return res.status(200).json({
+                status: 'ERR_email',
+                message: 'The input is email'
+            })
+        } else if(!name) {
+            return res.status(200).json({
+                status: 'ERR_name',
+                message: 'The input is name'
+            })
+        } 
+        const response = await userService.checkEmailSignUp(req.body)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            err: e
+        })
+    }
+}
+const checkOTPSignUp = async (req, res) => {
+    try {
+        const { otp, token, email, name } = req.body
+        if(!token || !otp || !email || !name) {
+            return res.status(200).json({
+                status: 'ERR_all',
+                message: 'The input is required'
+            })
+        } else if (!token) {
+            // trả về 1 thông báo lỗi ở email
+            return res.status(200).json({
+                status: 'ERR_token',
+                message: 'The input is token'
+            })
+        } else if (!name) {
+            return res.status(200).json({
+                status: 'ERR_nameFail',
+                message: 'Invalid name'
+            })
+        } else if (!email) {
+            return res.status(200).json({
+                status: 'ERR_emailFail',
+                message: 'Invalid email'
+            })
+        } else if (!otp) {
+            return res.status(200).json({
+                status: 'ERR_otp',
+                message: 'Invalid otp'
+            })
+        } 
+        const response = await userService.checkOTPSignUp(req.body)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            err: e
+        })
+    }
+}
 const createUser = async (req, res) => {
     try {
         // hiển thị ra những dữ liệu nhận về bên phía client
         // console.log(req.body)
 
         // nhận những dữ liệu dx gửi qua từ phía client
-        const { email, password, confirmPassword } = req.body
+        const { email, token, otp, password, confirmPassword, name } = req.body
 
         // kiểm tra xem có phải là email ko hay là 1 cái String
         const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
@@ -19,7 +84,7 @@ const createUser = async (req, res) => {
         const isCheckPassWord = password.length >=6
         
         // kiểm tra xem nếu mà nó ko có 1 trong những thằng này
-        if(!email || !password || !confirmPassword) {
+        if(!email || !password || !confirmPassword || !token || !otp || !name) {
             // trả về 1 thông báo lỗi khi ko nhận dx 1 cái nào đó
             return res.status(200).json({
                 status: 'ERR_all',
@@ -35,6 +100,21 @@ const createUser = async (req, res) => {
             return res.status(200).json({
                 status: 'ERR_passFail',
                 message: 'Invalid password'
+            })
+        } else if (!token) {
+            return res.status(200).json({
+                status: 'ERR_tokenFail',
+                message: 'Invalid token'
+            })
+        } else if (!otp) {
+            return res.status(200).json({
+                status: 'ERR_otpFail',
+                message: 'Invalid otp'
+            })
+        } else if (!name) {
+            return res.status(200).json({
+                status: 'ERR_nameFail',
+                message: 'Invalid name'
             })
         } else if (password !== confirmPassword) {
             // trả về 1 thông báo lỗi khi 2 cái này ko giống nhau
@@ -384,5 +464,7 @@ module.exports = {
     deleteUserMany,
     checkDetailsUserByEmail,
     checkDetailsUserByOTP,
-    ChangePassword
+    ChangePassword,
+    checkEmailSignUp,
+    checkOTPSignUp
 }

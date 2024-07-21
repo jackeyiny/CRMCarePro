@@ -5,7 +5,6 @@ const { AuthMiddleware, AuthUserMiddleware } = require("../middleware/AuthMiddle
 
 // sau khi nhận được dữ liệu từ index.js thì sẽ chuyển đến controler
 // bên --client-- gọi đến các phương thức --get, post, put, delete--
-router.post('/sign-up', userController.createUser)
 router.post('/sign-in', userController.loginUser)
 router.post('/log-out', userController.logoutUsser)
 
@@ -14,9 +13,16 @@ router.put('/update-user/:id',AuthUserMiddleware, userController.updateUser)
 router.delete('/delete-user/:id', AuthMiddleware, userController.deleteUser)
 router.get('/getAll', userController.getAllUser)
 router.get('/get-details/:id', AuthUserMiddleware, userController.getDetailsUser)
+
+// quên mật khẩu
 router.post('/check-email', userController.checkDetailsUserByEmail)
 router.post('/check-otp', userController.checkDetailsUserByOTP)
 router.put('/change-password', userController.ChangePassword)
+
+// xác nhận email để lấy mã otp rồi đăng ký
+router.post('/check-email-sign-up', userController.checkEmailSignUp)
+router.post('/check-otp-sign-up', userController.checkOTPSignUp)
+router.post('/sign-up', userController.createUser)
 
 
 // giờ trong cái --token-- mình đặt thời gian hết hạn cho cái --token-- nên khi thời gian --token-- hết hạn thì mình sẽ
