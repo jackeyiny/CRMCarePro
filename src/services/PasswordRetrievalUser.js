@@ -77,7 +77,7 @@ const sendOtpEmailLogIn = async (email, otp) => {
     let mailOptions = {
         from: "nkhai96000@gmail.com",
         to: email,
-        subject: "Thông báo đặt hàng thành công",
+        subject: "Mã Xác Nhận",
         html: `${content}`
     };
 
