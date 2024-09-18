@@ -114,6 +114,26 @@ const getAllComment = async (req, res) => {
       });
   }
 }
+const getAllCommentApp = async (req, res) => {
+    try {
+        // Nhận id_product từ req.body
+        const { id } = req.params;
+        
+  
+        // Gọi service với id_product
+        const response = await commentService.getAllComment(id);
+  
+        // Trả về kết quả dưới dạng JSON
+        return res.status(200).json(response);
+    } catch (e) {
+        // Báo lỗi nếu có lỗi xảy ra
+        return res.status(404).json({
+            message: e.message // Sử dụng e.message thay vì e để trả về thông điệp lỗi chi tiết
+        });
+    }
+  }
+
+
 
 
 
@@ -122,4 +142,5 @@ module.exports = {
     updateComment,
     deleteComment,
     getAllComment,
+    getAllCommentApp
 }

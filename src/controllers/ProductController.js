@@ -7,13 +7,15 @@ const productService = require('../services/ProductService')
 const createProduct = async (req, res) => {
     try {
         // nhận những dữ liệu dx gửi qua từ phía client
-        const { name, image, type, countInStock, price, rating, description, discount } = req.body
+        const { name, type, countInStock, price, rating, description, discount } = req.body
+        // const { name, image, type, countInStock, price, rating, description, discount } = req.body
 
         // hiển thị ra những dữ liệu nhận về bên phía client
         // console.log("req.body", req.body)
 
         // kiểm tra xem nếu mà nó ko có 1 trong những thằng này
-        if(!name || !image || !type || !countInStock || !price || !rating || !discount) {
+        if(!name || !type || !countInStock || !price || !rating || !discount) {
+        // if(!name || !image || !type || !countInStock || !price || !rating || !discount) {
             // trả về 1 thông báo lỗi khi ko nhận dx 1 cái nào đó
             return res.status(200).json({
                 status: 'ERR',
@@ -152,6 +154,7 @@ const getAllProduct = async (req, res) => {
     try {
         // lấy dữ liệu trên thanh url
         const { limit, page, sort, filter } = req.query
+        // console.log('filter', filter)
         // gói tới service
         const response = await productService.getAllProduct(Number(limit) || null, Number(page) || 0, sort, filter)
         // sau khi xử lý dữ liệu xong ta chuyển kiểu dữ liệu đã xử lý về --Json-- sau đó trả về

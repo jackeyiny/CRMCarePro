@@ -7,7 +7,8 @@ const createProduct = (newProduct) => {
     return new Promise(async (resolve, reject) => {
 
         // nhận những dữ liệu dx gửi qua từ phía client
-        const { name, image, type, countInStock, price, rating, description, discount } = newProduct
+        const { name, type, countInStock, price, rating, description, discount } = newProduct
+        // const { name, image, type, countInStock, price, rating, description, discount } = newProduct
         try {
             const checkProduct = await Product.findOne({
                 name: name
@@ -23,7 +24,6 @@ const createProduct = (newProduct) => {
             // viết như này nó sẽ tự động map cái key với cái name với nhau
             const createdProduct = await Product.create({
                 name, 
-                image, 
                 type, 
                 price, 
                 countInStock: Number(countInStock), 
@@ -276,7 +276,7 @@ const getAllProduct = (limit, page, sort, filter) => {
         }
     })
 }
-const getAllProductType = (limit, page, sort, filter) => {
+const getAllProductType = () => {
     return new Promise(async (resolve, reject) => {
         try {    
             const result = await Product.find()

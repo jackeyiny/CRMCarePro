@@ -101,11 +101,27 @@ const getAllComment = (id_product) => {
         }
     });
 };
+const getAllCommentApp = (id_product) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const allComments = await Comment.find({ id_product: id_product });
+            resolve({
+                status: 'OK',
+                message: 'Success',
+                data: allComments
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 
 module.exports = {
     createComment,
     updateComment,
     deleteComment,
     getAllComment,
+    getAllCommentApp
 };
 

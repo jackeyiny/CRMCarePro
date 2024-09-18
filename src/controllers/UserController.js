@@ -438,7 +438,7 @@ const logoutUsser = async (req, res) => {
         // xóa cái cookies đi là được
         res.clearCookie('refresh_token')
         res.clearCookie('access_token')
-        
+    
 
         return res.status(200).json({
             status: 'OK',

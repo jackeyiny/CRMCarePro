@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema(
         // tên
         name: { type: String, required: true},
         // ảnh
-        image: { type: String, required: true },
+        // image: { type: String, required: true },
         // Loại hàng 
         type: { type: String, required: true },
         // giá
