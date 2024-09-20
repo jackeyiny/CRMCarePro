@@ -7,23 +7,37 @@ const JwtService = require('../services/JwtService')
 // thêm User
 const checkEmailSignUp = async (req, res) => {
     try {
-        const { email, name } = req.body
+        const { email, name, OK } = req.body
 
         // kiểm tra xem có phải là email ko hay là 1 cái String
-        const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+        const reg = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
         const isCheckEmail = reg.test(email)
 
-        if (!isCheckEmail) {
-            return res.status(200).json({
-                status: 'ERR_email',
-                message: 'The input is email'
-            })
-        } else if(!name) {
-            return res.status(200).json({
-                status: 'ERR_name',
-                message: 'The input is name'
-            })
-        } 
+        if(email && name && !OK) {
+            if (!isCheckEmail) {
+                return res.status(200).json({
+                    status: 'OK',
+                    message: 'The input is email'
+                })
+            } else if(!name) {
+                return res.status(200).json({
+                    status: 'OK',
+                    message: 'The input is name'
+                })
+            } 
+        } else if(email && name && OK) {
+            if (!isCheckEmail) {
+                return res.status(200).json({
+                    status: 'ERR_email',
+                    message: 'The input is email'
+                })
+            } else if(!name) {
+                return res.status(200).json({
+                    status: 'ERR_name',
+                    message: 'The input is name'
+                })
+            } 
+        }
         const response = await userService.checkEmailSignUp(req.body)
         return res.status(200).json(response)
     } catch (e) {
@@ -34,34 +48,66 @@ const checkEmailSignUp = async (req, res) => {
 }
 const checkOTPSignUp = async (req, res) => {
     try {
-        const { otp, token, email, name } = req.body
-        if(!token || !otp || !email || !name) {
-            return res.status(200).json({
-                status: 'ERR_all',
-                message: 'The input is required'
-            })
-        } else if (!token) {
-            // trả về 1 thông báo lỗi ở email
-            return res.status(200).json({
-                status: 'ERR_token',
-                message: 'The input is token'
-            })
-        } else if (!name) {
-            return res.status(200).json({
-                status: 'ERR_nameFail',
-                message: 'Invalid name'
-            })
-        } else if (!email) {
-            return res.status(200).json({
-                status: 'ERR_emailFail',
-                message: 'Invalid email'
-            })
-        } else if (!otp) {
-            return res.status(200).json({
-                status: 'ERR_otp',
-                message: 'Invalid otp'
-            })
-        } 
+        const { otp, token, email, name, OK } = req.body
+        // console.log('req.body', req.body)
+        if(email && name && token && otp && !OK) {
+            if(!token || !otp || !email || !name) {
+                return res.status(200).json({
+                    status: 'OK',
+                    message: 'The input is required'
+                })
+            } else if (!token) {
+                // trả về 1 thông báo lỗi ở email
+                return res.status(200).json({
+                    status: 'OK',
+                    message: 'The input is token'
+                })
+            } else if (!name) {
+                return res.status(200).json({
+                    status: 'OK',
+                    message: 'Invalid name'
+                })
+            } else if (!email) {
+                return res.status(200).json({
+                    status: 'OK',
+                    message: 'Invalid email'
+                })
+            } else if (!otp) {
+                return res.status(200).json({
+                    status: 'OK',
+                    message: 'Invalid otp'
+                })
+            } 
+        } else if(email && name && token && otp && OK) {
+            if(!token || !otp || !email || !name) {
+                return res.status(200).json({
+                    status: 'ERR_all',
+                    message: 'The input is required'
+                })
+            } else if (!token) {
+                // trả về 1 thông báo lỗi ở email
+                return res.status(200).json({
+                    status: 'ERR_token',
+                    message: 'The input is token'
+                })
+            } else if (!name) {
+                return res.status(200).json({
+                    status: 'ERR_nameFail',
+                    message: 'Invalid name'
+                })
+            } else if (!email) {
+                return res.status(200).json({
+                    status: 'ERR_emailFail',
+                    message: 'Invalid email'
+                })
+            } else if (!otp) {
+                return res.status(200).json({
+                    status: 'ERR_otp',
+                    message: 'Invalid otp'
+                })
+            } 
+        }
+        
         const response = await userService.checkOTPSignUp(req.body)
         return res.status(200).json(response)
     } catch (e) {
@@ -77,56 +123,9 @@ const createUser = async (req, res) => {
 
         // nhận những dữ liệu dx gửi qua từ phía client
         const { email, token, otp, password, confirmPassword, name } = req.body
+        console.log('req.body', req.body)
 
-        // kiểm tra xem có phải là email ko hay là 1 cái String
-        const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-        const isCheckEmail = reg.test(email)
-        const isCheckPassWord = password.length >=6
-        
-        // kiểm tra xem nếu mà nó ko có 1 trong những thằng này
-        if(!email || !password || !confirmPassword || !token || !otp || !name) {
-            // trả về 1 thông báo lỗi khi ko nhận dx 1 cái nào đó
-            return res.status(200).json({
-                status: 'ERR_all',
-                message: 'The input is required'
-            })
-        } else if (!isCheckEmail) {
-            // trả về 1 thông báo lỗi ở email
-            return res.status(200).json({
-                status: 'ERR_email',
-                message: 'The input is email'
-            })
-        } else if (!isCheckPassWord) {
-            return res.status(200).json({
-                status: 'ERR_passFail',
-                message: 'Invalid password'
-            })
-        } else if (!token) {
-            return res.status(200).json({
-                status: 'ERR_tokenFail',
-                message: 'Invalid token'
-            })
-        } else if (!otp) {
-            return res.status(200).json({
-                status: 'ERR_otpFail',
-                message: 'Invalid otp'
-            })
-        } else if (!name) {
-            return res.status(200).json({
-                status: 'ERR_nameFail',
-                message: 'Invalid name'
-            })
-        } else if (password !== confirmPassword) {
-            // trả về 1 thông báo lỗi khi 2 cái này ko giống nhau
-            return res.status(200).json({
-                status: 'ERR_pass',
-                message: 'The input is password || confirmPassword'
-            })
-        } 
-        // bắt đầu kiểm tra email
-        // console.log('isCheckEmail', isCheckEmail)
-        
-        // nhận dữ liệu từ UserRouter.js sau đó sẽ truyền dữ liệu nhận đx vào UserService để xử lý
+
         const response = await userService.createUser(req.body)
         // sau khi xử lý dữ liệu xong ta chuyển kiểu dữ liệu đã xử lý về --Json-- sau đó trả về
         return res.status(200).json(response)
@@ -142,29 +141,48 @@ const createUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         // hiển thị ra những dữ liệu nhận về bên phía client
-        // console.log(req.body)
+        console.log(req.body)
 
         // nhận những dữ liệu dx gửi qua từ phía client
-        const {email, password} = req.body
+        const {email, password, OK} = req.body
 
         // kiểm tra xem có phải là email ko hay là 1 cái String
-        const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+        const reg = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
         const isCheckEmail = reg.test(email)
         
         // kiểm tra xem nếu mà nó ko có 1 trong những thằng này
-        if(!email || !password) {
-            // trả về 1 thông báo lỗi khi ko nhận dx 1 cái nào đó
-            return res.status(200).json({
-                status: 'ERR',
-                message: 'The input is required'
-            })
-        } else if (!isCheckEmail) {
-            // trả về 1 thông báo lỗi ở email
-            return res.status(200).json({
-                status: 'ERR',
-                message: 'The input is email'
-            })
+        if(!OK && email && password){
+            console.log('alo')
+            if(!email || !password) {
+                // trả về 1 thông báo lỗi khi ko nhận dx 1 cái nào đó
+                return res.status(200).json({
+                    status: 'OK',
+                    message: 'The input is required'
+                })
+            } else if (!isCheckEmail) {
+                // trả về 1 thông báo lỗi ở email
+                return res.status(200).json({
+                    status: 'OK',
+                    message: 'The input is email'
+                })
+            }
+        } else if(email && password && OK) {
+            console.log('alo11')
+            if(!email || !password) {
+                // trả về 1 thông báo lỗi khi ko nhận dx 1 cái nào đó
+                return res.status(200).json({
+                    status: 'ERR',
+                    message: 'The input is required'
+                })
+            } else if (!isCheckEmail) {
+                // trả về 1 thông báo lỗi ở email
+                return res.status(200).json({
+                    status: 'ERR',
+                    message: 'The input is email'
+                })
+            }
         }
+        
         // bắt đầu kiểm tra email
         // console.log('isCheckEmail', isCheckEmail)
         
@@ -339,6 +357,7 @@ const checkDetailsUserByEmail = async (req, res) => {
     try {
         // nhận id từ url
         const emailUser = req.body
+        console.log(emailUser)
 
         // kiểm tra nếu ko lấy dx id
         if(!emailUser) {
@@ -360,11 +379,35 @@ const checkDetailsUserByEmail = async (req, res) => {
         })
     }
 }
+const checkDetailsUserByEmailApp = async (req, res) => {
+    try {
+        // nhận id từ url
+        const emailUser = req.body
+        console.log(emailUser)
+
+        // kiểm tra nếu ko lấy dx id
+        if(!emailUser) {
+            return res.status(200).json({
+                status: 'OK',
+                message: 'The emailUser is required'
+            })
+        }
+        // đóng gói dữ liệu cần get và id lấy từ url gửi qua service
+        const response = await userService.checkDetailsUserByEmailApp(emailUser)
+        // gửi dữ liệu đã xử lý xong đi
+        return res.status(200).json(response)
+
+
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
 const checkDetailsUserByOTP = async (req, res) => {
     try {
         const { otp, email } = req.body
-        // console.log('result', req.body)
-
         // đóng gói dữ liệu cần get và id lấy từ url gửi qua service
         const response = await userService.checkDetailsUserByOTP(req.body)
         // gửi dữ liệu đã xử lý xong đi
@@ -380,7 +423,7 @@ const checkDetailsUserByOTP = async (req, res) => {
 }
 const ChangePassword = async (req, res) => {
     try {
-        const { otp, email, anewpassword } = req.body
+        const { otp, email, anewpassword, password, passwordRetrieval } = req.body
         // console.log('result', req.body)
 
         // đóng gói dữ liệu cần get và id lấy từ url gửi qua service
@@ -466,5 +509,6 @@ module.exports = {
     checkDetailsUserByOTP,
     ChangePassword,
     checkEmailSignUp,
-    checkOTPSignUp
+    checkOTPSignUp,
+    checkDetailsUserByEmailApp
 }

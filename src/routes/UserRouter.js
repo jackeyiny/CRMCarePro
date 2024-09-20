@@ -16,6 +16,8 @@ router.get('/get-details/:id', AuthUserMiddleware, userController.getDetailsUser
 
 // quên mật khẩu
 router.post('/check-email', userController.checkDetailsUserByEmail)
+router.post('/check-email-app', userController.checkDetailsUserByEmailApp)
+
 router.post('/check-otp', userController.checkDetailsUserByOTP)
 router.put('/change-password', userController.ChangePassword)
 

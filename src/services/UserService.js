@@ -13,18 +13,29 @@ const secret = '123123'
 const checkEmailSignUp = (emailUser) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const { email, name } = emailUser;
+            const { email, name, OK } = emailUser;
 
             // Kiểm tra xem email đã tồn tại hay chưa
             const user = await User.findOne({ email: email });
 
-            if (user !== null) {
-                resolve({
-                    status: 'ERR',
-                    message: 'Email already exists'
-                });
-                return;
+            if(email && name && !OK) {
+                if (user !== null) {
+                    resolve({
+                        status: 'OK',
+                        message: 'Email already exists'
+                    });
+                    return;
+                }
+            } else if(email && name && OK) {
+                if (user !== null) {
+                    resolve({
+                        status: 'ERR',
+                        message: 'Email already exists'
+                    });
+                    return;
+                }
             }
+            
 
             // Tạo mã OTP ngẫu nhiên
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -46,34 +57,55 @@ const checkEmailSignUp = (emailUser) => {
         }
     });
 };
-
 const checkOTPSignUp = (newUser) => {
     return new Promise(async (resolve, reject) => {
-        const { otp, token, email, name } = newUser;
+        const { otp, token, email, name, OK } = newUser;
         try {
             const decoded = jwt.verify(token, secret);
 
-            console.log('Decoded OTP:', decoded.otp);
-            console.log('User entered OTP:', otp);
+            // console.log('Decoded OTP:', decoded.otp);
+            // console.log('User entered OTP:', otp);
 
-            // Kiểm tra xem OTP có đúng và không hết hạn không
-            if (decoded.otp === otp) {
-                resolve({
+            if(email && name && token && otp && !OK) {
+                // Kiểm tra xem OTP có đúng và không hết hạn không
+                console.log('decoded.otp === otp', decoded.otp === otp)
+                if (decoded.otp === otp) {
+                    resolve({
+                        status: 'OK',
+                        message: 'OTP verified successfully'
+                    });
+                } else {
+                    resolve({
+                        status: 'OK',
+                        message: 'Invalid OTP'
+                    });
+                }
+            } else if(email && name && token && otp && OK) {
+                // Kiểm tra xem OTP có đúng và không hết hạn không
+                if (decoded.otp === otp) {
+                    resolve({
+                        status: 'OK',
+                        message: 'OTP verified successfully'
+                    });
+                } else {
+                    resolve({
+                        status: 'ERR',
+                        message: 'Invalid OTP'
+                    });
+                }
+            }
+        } catch (e) {
+            if(email && name && token && otp && !OK) {
+                reject({
                     status: 'OK',
-                    message: 'OTP verified successfully'
+                    message: 'Token is invalid or expired'
                 });
-            } else {
-                resolve({
+            } else if(email && name && token && otp && OK) {
+                reject({
                     status: 'ERR',
-                    message: 'Invalid OTP'
+                    message: 'Token is invalid or expired'
                 });
             }
-
-        } catch (e) {
-            reject({
-                status: 'ERR',
-                message: 'Token is invalid or expired'
-            });
         }
     });
 };
@@ -101,20 +133,20 @@ const createUser = (newUser) => {
             // const hash = bcrypt.hashSync(password, 10)
             // console.log('hash', hash)   
             
-            const decoded = jwt.verify(token, secret);
+            // const decoded = jwt.verify(token, secret);
 
-            // Kiểm tra xem OTP có đúng và không hết hạn không
-            if (decoded.otp === otp) {
-                resolve({
-                    status: 'OK',
-                    message: 'OTP verified successfully'
-                });
-            } else {
-                resolve({
-                    status: 'ERR',
-                    message: 'Invalid OTP'
-                });
-            }
+            // // Kiểm tra xem OTP có đúng và không hết hạn không
+            // if (decoded.otp === otp) {
+            //     resolve({
+            //         status: 'OK',
+            //         message: 'OTP verified successfully'
+            //     });
+            // } else {
+            //     resolve({
+            //         status: 'ERR',
+            //         message: 'Invalid OTP'
+            //     });
+            // }
 
             // viết như này nó sẽ tự động map cái key với cái name với nhau
             const createUser = await User.create({
@@ -127,6 +159,7 @@ const createUser = (newUser) => {
                 // này ko cẩn thiệt lưu
                 // confirmPassword: hash, 
             })
+            console.log('createUser', createUser)
             // nếu tồn tại createUser thì sẽ thực hiện thông báo thành công và trả về data
             if(createUser) {
                 resolve({
@@ -146,7 +179,7 @@ const createUser = (newUser) => {
 // làm như này nó sẽ tự động thêm lên database cho mình
 const loginUser = (userLogin) => {
     return new Promise(async (resolve, reject) => {
-        const {email, password} = userLogin
+        const {email, password, OK} = userLogin
         // console.log('password', password)
 
         try {
@@ -160,6 +193,24 @@ const loginUser = (userLogin) => {
                     data: checkUser
                 })
                 */
+               console.log('checkUser', checkUser)
+            if(!OK && email && password){
+                if(checkUser === null) {
+                    resolve({
+                        status: 'OK',
+                        // thông báo tài khoảng chưa tồn tại
+                        message: 'The user is not defined'
+                    })
+                }
+            } else if(email && password && OK) {
+                if(checkUser === null) {
+                    resolve({
+                        status: 'ERR',
+                        // thông báo tài khoảng chưa tồn tại
+                        message: 'The user is not defined'
+                    })
+                }
+            }
             if(checkUser === null) {
                 resolve({
                     status: 'ERR',
@@ -344,6 +395,7 @@ const checkDetailsUserByEmail = (emailUser) => {
                 email: emailUser1
             })
             
+            console.log('user', user)
             // nếu ko gióng thì in ra thông báo
             if (!user) {
                 // console.log('user')
@@ -375,29 +427,93 @@ const checkDetailsUserByEmail = (emailUser) => {
         }
     })
 }
+const checkDetailsUserByEmailApp = (emailUser) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // chuyển cái email gửi từ client lên với kiểu string
+            // sau đó chuyển sang email
+            const emailUser1 = emailUser.email; 
+
+            // check xem 2 id có giống nhau ko
+            const user = await User.findOne({
+                email: emailUser1
+            })
+            
+            console.log('user', user)
+            // nếu ko gióng thì in ra thông báo
+            if (!user) {
+                // console.log('user')
+                resolve({
+                    status: 'OK',
+                    message: 'The user is not defined'
+                })
+            } 
+            
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            const otpExpiry = new Date(Date.now() + 5 * 30 * 1000); // OTP hết hạn sau 30 giây
+    
+            // lưu otp cũng như thời gian hết hạn
+            user.otp = otp;
+            user.otpExpiry = otpExpiry;
+            await user.save();
+    
+            // gọi tới gửi mã otp đến email
+            await sendOtpEmail(emailUser1, otp);
+    
+            resolve({
+                status: 'OK',
+                message: 'SUCCESS',
+                data: user
+            });
+            
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
 const checkDetailsUserByOTP = (otpAndPassword) => {
     return new Promise(async (resolve, reject) => {
-        const { otp, email } = otpAndPassword;
+        const { otp, email, OK } = otpAndPassword;
         try {
             // const emailUser = email.email; 
             const user = await User.findOne({ email: email });
 
-            // Check if the user exists
-            if (!user) {
-                resolve({
-                    status: 'ERR',
-                    message: 'User not found'
-                });
-                return;
-            }
-
-            // Check if OTP matches and OTP is not expired
-            if (user.otp !== otp || user.otpExpiry < Date.now()) {
-                resolve({
-                    status: 'ERR',
-                    message: 'Expired or invalid OTP'
-                });
-                return;
+            if(otp && user && !OK) {
+                // Check if the user exists
+                if (!user) {
+                    resolve({
+                        status: 'OK',
+                        message: 'User not found'
+                    });
+                    return;
+                }
+                console.log('user.otpExpiry', user.otpExpiry < Date.now(), user.otp)
+                // Check if OTP matches and OTP is not expired
+                if (user.otp !== otp || user.otpExpiry < Date.now()) {
+                    resolve({
+                        status: 'OK',
+                        message: 'Expired or invalid OTP'
+                    });
+                    return;
+                }
+            } else if(otp && user && OK) {
+                // Check if the user exists
+                if (!user) {
+                    resolve({
+                        status: 'ERR',
+                        message: 'User not found'
+                    });
+                    return;
+                }
+                console.log('user.otpExpiry', user.otpExpiry < Date.now(), user.otp)
+                // Check if OTP matches and OTP is not expired
+                if (user.otp !== otp || user.otpExpiry < Date.now()) {
+                    resolve({
+                        status: 'ERR',
+                        message: 'Expired or invalid OTP'
+                    });
+                    return;
+                }
             }
 
             // If OTP is valid and not expired, resolve with user data
@@ -414,7 +530,8 @@ const checkDetailsUserByOTP = (otpAndPassword) => {
 };
 const ChangePassword = (newChangePassword) => {
     return new Promise(async (resolve, reject) => {
-        const { otp, email, anewpassword } = newChangePassword;
+        const { otp, email, anewpassword, password, passwordRetrieval } = newChangePassword;
+        // console.log('newChangePassword', newChangePassword)
         try {
             // const emailUser = email.email; 
             const user = await User.findOne({ email: email });
@@ -428,18 +545,28 @@ const ChangePassword = (newChangePassword) => {
                 return;
             }
 
-            // console.log('otp', otp, user.otpExpiry)
-            // Check if OTP matches and OTP is not expired
-            if (user.otp !== otp || user.otpExpiry < Date.now()) {
-                resolve({
-                    status: 'ERR',
-                    message: 'Expired or invalid OTP'
-                });
-                return;
-            }
-
             // const hashedPassword = await bcrypt.hash(anewpassword, 10);
-            user.password = anewpassword;
+            if(anewpassword) {
+                if (user.otp !== otp || user.otpExpiry < Date.now()) {
+                    resolve({
+                        status: 'ERR',
+                        message: 'Expired or invalid OTP'
+                    });
+                    return;
+                }
+                user.password = anewpassword;
+            } else if (password && passwordRetrieval) {
+                if (user.otp !== otp || user.otpExpiry < Date.now()) {
+                    resolve({
+                        status: 'OK',
+                        message: 'Expired or invalid OTP'
+                    });
+                    return;
+                }
+                if(password === passwordRetrieval) {
+                    user.password = password;
+                }
+            }
             user.otp = null;
             user.otpExpiry = null;
             await user.save();
@@ -472,5 +599,6 @@ module.exports = {
     checkDetailsUserByOTP,
     ChangePassword,
     checkOTPSignUp,
-    checkEmailSignUp
+    checkEmailSignUp,
+    checkDetailsUserByEmailApp
 }
