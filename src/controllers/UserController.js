@@ -123,7 +123,7 @@ const createUser = async (req, res) => {
 
         // nhận những dữ liệu dx gửi qua từ phía client
         const { email, token, otp, password, confirmPassword, name } = req.body
-        console.log('req.body', req.body)
+        // console.log('req.body', req.body)
 
 
         const response = await userService.createUser(req.body)
@@ -141,7 +141,7 @@ const createUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         // hiển thị ra những dữ liệu nhận về bên phía client
-        console.log(req.body)
+        // console.log(req.body)
 
         // nhận những dữ liệu dx gửi qua từ phía client
         const {email, password, OK} = req.body
@@ -152,7 +152,7 @@ const loginUser = async (req, res) => {
         
         // kiểm tra xem nếu mà nó ko có 1 trong những thằng này
         if(!OK && email && password){
-            console.log('alo')
+            // console.log('alo')
             if(!email || !password) {
                 // trả về 1 thông báo lỗi khi ko nhận dx 1 cái nào đó
                 return res.status(200).json({
@@ -167,7 +167,7 @@ const loginUser = async (req, res) => {
                 })
             }
         } else if(email && password && OK) {
-            console.log('alo11')
+            // console.log('alo11')
             if(!email || !password) {
                 // trả về 1 thông báo lỗi khi ko nhận dx 1 cái nào đó
                 return res.status(200).json({
@@ -357,7 +357,7 @@ const checkDetailsUserByEmail = async (req, res) => {
     try {
         // nhận id từ url
         const emailUser = req.body
-        console.log(emailUser)
+        // console.log(emailUser)
 
         // kiểm tra nếu ko lấy dx id
         if(!emailUser) {
@@ -383,7 +383,7 @@ const checkDetailsUserByEmailApp = async (req, res) => {
     try {
         // nhận id từ url
         const emailUser = req.body
-        console.log(emailUser)
+        // console.log(emailUser)
 
         // kiểm tra nếu ko lấy dx id
         if(!emailUser) {

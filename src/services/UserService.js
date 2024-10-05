@@ -68,7 +68,7 @@ const checkOTPSignUp = (newUser) => {
 
             if(email && name && token && otp && !OK) {
                 // Kiểm tra xem OTP có đúng và không hết hạn không
-                console.log('decoded.otp === otp', decoded.otp === otp)
+                // console.log('decoded.otp === otp', decoded.otp === otp)
                 if (decoded.otp === otp) {
                     resolve({
                         status: 'OK',
@@ -159,7 +159,7 @@ const createUser = (newUser) => {
                 // này ko cẩn thiệt lưu
                 // confirmPassword: hash, 
             })
-            console.log('createUser', createUser)
+            // console.log('createUser', createUser)
             // nếu tồn tại createUser thì sẽ thực hiện thông báo thành công và trả về data
             if(createUser) {
                 resolve({
@@ -193,7 +193,7 @@ const loginUser = (userLogin) => {
                     data: checkUser
                 })
                 */
-               console.log('checkUser', checkUser)
+            //    console.log('checkUser', checkUser)
             if(!OK && email && password){
                 if(checkUser === null) {
                     resolve({
@@ -395,7 +395,7 @@ const checkDetailsUserByEmail = (emailUser) => {
                 email: emailUser1
             })
             
-            console.log('user', user)
+            // console.log('user', user)
             // nếu ko gióng thì in ra thông báo
             if (!user) {
                 // console.log('user')
@@ -439,7 +439,7 @@ const checkDetailsUserByEmailApp = (emailUser) => {
                 email: emailUser1
             })
             
-            console.log('user', user)
+            // console.log('user', user)
             // nếu ko gióng thì in ra thông báo
             if (!user) {
                 // console.log('user')
@@ -487,7 +487,7 @@ const checkDetailsUserByOTP = (otpAndPassword) => {
                     });
                     return;
                 }
-                console.log('user.otpExpiry', user.otpExpiry < Date.now(), user.otp)
+                // console.log('user.otpExpiry', user.otpExpiry < Date.now(), user.otp)
                 // Check if OTP matches and OTP is not expired
                 if (user.otp !== otp || user.otpExpiry < Date.now()) {
                     resolve({
@@ -505,7 +505,7 @@ const checkDetailsUserByOTP = (otpAndPassword) => {
                     });
                     return;
                 }
-                console.log('user.otpExpiry', user.otpExpiry < Date.now(), user.otp)
+                // console.log('user.otpExpiry', user.otpExpiry < Date.now(), user.otp)
                 // Check if OTP matches and OTP is not expired
                 if (user.otp !== otp || user.otpExpiry < Date.now()) {
                     resolve({

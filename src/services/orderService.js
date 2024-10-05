@@ -230,6 +230,7 @@ const getDetailsOrder = (userId) => {
             const order = await Order.findById({
                 _id: userId
             })
+            // console.log('order', order)
             // nếu ko gióng thì in ra thông báo
             if (order === null) {
                 resolve({
@@ -261,10 +262,12 @@ const cancelOrderDetails = (id) => {
             // nếu thành công thì in ra thông báo
             if (order === null) {
                 resolve({
-                    status: 'ok',
+                    status: 'OK',
                     message: 'The product is not defined'
                 })
             }
+            
+            // console.log('order1111', order)
 
             resolve({
                 status: 'OK',

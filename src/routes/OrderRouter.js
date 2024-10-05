@@ -7,11 +7,11 @@ const { AuthUserMiddleware, AuthMiddleware } = require("../middleware/AuthMiddle
 router.post('/create', AuthUserMiddleware, orderController.createOrder)
 
 // lấy sản phẩm đã order theo id 
-router.get('/get-all-order/:id', AuthUserMiddleware, orderController.getAllOrderDetail)
+router.get('/get-all-order/:id', orderController.getAllOrderDetail)
 
-router.get('/get-details-order/:id', AuthUserMiddleware, orderController.getDetailsOrder)
+router.get('/get-details-order/:id', orderController.getDetailsOrder)
 
-router.delete('/cancel-order/:id', AuthUserMiddleware, orderController.cancelOrderDetails)
+router.delete('/cancel-order/:id', orderController.cancelOrderDetails)
 
 router.get('/get-all-order', AuthUserMiddleware, orderController.getAllOrder)
 

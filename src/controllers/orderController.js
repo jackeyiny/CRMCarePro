@@ -75,7 +75,7 @@ const getAllOrderDetail = async (req, res) => {
     try {
         // nhận id từ url
         const userId = req.params.id
-        // console.log('productId: ', productId)
+        // console.log('productId: ', userId)
         // kiểm tra nếu ko lấy dx id
         if(!userId) {
             return res.status(200).json({
@@ -103,7 +103,7 @@ const getDetailsOrder = async (req, res) => {
     try {
         // nhận id từ url
         const userId = req.params.id
-        // console.log('productId: ', productId)
+        // console.log('userId: ', userId)
         // kiểm tra nếu ko lấy dx id
         if(!userId) {
             return res.status(200).json({
@@ -125,14 +125,12 @@ const getDetailsOrder = async (req, res) => {
     }
 }
 
-
-
 // xóa sản phẩm
 const cancelOrderDetails = async (req, res) => {
     try {
         // nhận id từ url
         const orderId = req.params.id
-        // console.log('productId: ', productId)
+        // console.log('121212  : ', orderId)
         // kiểm tra nếu ko lấy dx id
         if(!orderId) {
             return res.status(200).json({
