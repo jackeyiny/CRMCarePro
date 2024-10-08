@@ -181,7 +181,7 @@ const loginUser = (userLogin) => {
     return new Promise(async (resolve, reject) => {
         const {email, password, OK} = userLogin
         // console.log('password', password)
-        
+
         try {
             const checkUser = await User.findOne({
                 email: email
@@ -193,7 +193,7 @@ const loginUser = (userLogin) => {
                     data: checkUser
                 })
                 */
-            // console.log('checkUser', checkUser);
+            //    console.log('checkUser', checkUser)
             if(!OK && email && password){
                 if(checkUser === null) {
                     resolve({
@@ -231,14 +231,14 @@ const loginUser = (userLogin) => {
             // cài này dùng để giới giạn thời gian đang nhập là --1H-- 
             const access_token = await genneralAccessToken({
                 // ta sẽ chuyền --id, isAdmin-- dưới database lên thông qua --checkUser.id, checkUser.isAdmin--
-                id: checkUser._id,
+                id: checkUser.id,
                 isAdmin: checkUser.isAdmin
             })
             // console.log('access_token', access_token)
 
             // cái này giới hạn tài khoảng có thời hạn là --365d--
             const refresh_token = await genneralRefreshToken({
-                id: checkUser._id,
+                id: checkUser.id,
                 isAdmin: checkUser.isAdmin
             })
 
