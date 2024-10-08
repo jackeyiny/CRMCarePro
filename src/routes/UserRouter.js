@@ -9,10 +9,12 @@ router.post('/sign-in', userController.loginUser)
 router.post('/log-out', userController.logoutUsser)
 
 // chỉ cho chính user đó hoặc là admin mới sửa được thông tin user
-router.put('/update-user/:id',AuthUserMiddleware, userController.updateUser)
+// router.put('/update-user/:id',AuthUserMiddleware, userController.updateUser)
+router.put('/update-user/:id', userController.updateUser)
 router.delete('/delete-user/:id', AuthMiddleware, userController.deleteUser)
 router.get('/getAll', userController.getAllUser)
-router.get('/get-details/:id', AuthUserMiddleware, userController.getDetailsUser)
+router.get('/get-details/:id', userController.getDetailsUser)
+// router.get('/get-details/:id', AuthUserMiddleware, userController.getDetailsUser)
 
 // quên mật khẩu
 router.post('/check-email', userController.checkDetailsUserByEmail)

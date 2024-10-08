@@ -118,7 +118,7 @@ const getAllCommentApp = async (req, res) => {
     try {
         // Nhận id_product từ req.body
         const { id } = req.params;
-        
+        // console.log('idsdf', id)
   
         // Gọi service với id_product
         const response = await commentService.getAllComment(id);

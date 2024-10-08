@@ -12,10 +12,11 @@ const createOrder = async (req, res) => {
         const { orderItems, paymentMethod, itemsPrice, shippingPrice, totalPrice, fullName, address, city, phone, email } = req.body
 
         // hiển thị ra những dữ liệu nhận về bên phía client
-        // console.log("req.body", req.body)
+        // console.log("req.body", req.body);
 
         // kiểm tra xem nếu mà nó ko có 1 trong những thằng này
-        if(!paymentMethod || !itemsPrice || !shippingPrice || !totalPrice || !fullName || !address || !city || !phone || !email) {
+        // if(!paymentMethod || !itemsPrice || !shippingPrice || !totalPrice || !fullName || !address || !city || !phone || !email) {
+        if(!paymentMethod || !itemsPrice || !fullName || !address || !city || !phone || !email) {
             // trả về 1 thông báo lỗi khi ko nhận dx 1 cái nào đó
             return res.status(200).json({
                 status: 'ERR',

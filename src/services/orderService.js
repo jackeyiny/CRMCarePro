@@ -93,7 +93,6 @@ const EmailService = require("../services/EmailService");
 // }
 
 const createOrder = (newOrder) => {
-    // console.log('newOrder', newOrder)
     return new Promise(async (resolve, reject) => {
         const { orderItems, paymentMethod, itemsPrice, shippingPrice, totalPrice, fullName, address, city, phone, user, isPaid, paidAt, email } = newOrder
         try {
@@ -150,6 +149,7 @@ const createOrder = (newOrder) => {
                         message: 'Đặt hàng thành công'
                     });
                 } else {
+                    console.log('zo kong2222');
                     resolve({
                         status: 'ERR',
                         message: 'Lỗi khi tạo đơn hàng'
@@ -159,7 +159,7 @@ const createOrder = (newOrder) => {
             
 
         } catch (e) {
-            // console.log('e', e);
+            console.log('e', e);
             reject(e);
         }
     });

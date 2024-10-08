@@ -4,7 +4,8 @@ const orderController = require('../controllers/orderController');
 const { AuthUserMiddleware, AuthMiddleware } = require("../middleware/AuthMiddleware");
 
 
-router.post('/create', AuthUserMiddleware, orderController.createOrder)
+router.post('/create', orderController.createOrder)
+// router.post('/create', AuthUserMiddleware, orderController.createOrder)
 
 // lấy sản phẩm đã order theo id 
 router.get('/get-all-order/:id', orderController.getAllOrderDetail)
