@@ -17,6 +17,8 @@ router.get('/search', productController.getSearch)
 
 router.get('/get-selling-products', productController.getSellingProducts)
 router.get('/get-new-product', productController.getNewProducts)
+router.get('/get-selling-products-new', productController.getSellingProductsNew)
+router.get('/get-new-product-new', productController.getNewProductsNew)
 router.get('/get-highest-priced-products', productController.getHighestPricedProducts)
 router.get('/get-lowest-priced-products', productController.getLowestPricedProducts)
 router.get('/get-random-product', productController.getRandomProduct)

@@ -328,11 +328,44 @@ const getSellingProducts = () => {
         }
     });
 };
+const getSellingProductsNew = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Lấy 8 sản phẩm bán được nhiều nhất
+            const topSellingProducts = await Product.find().sort({ selled: -1 }).limit(25);
+            
+            resolve({
+                status: 'OK',
+                message: 'Top selling products retrieved successfully',
+                data: topSellingProducts
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 const getNewProducts = () => {
     return new Promise(async (resolve, reject) => {
         try {
             // Lấy 8 sản phẩm mới nhất
             const newProducts = await Product.find().sort({ createdAt: -1 }).limit(8);
+            // console.log('newProducts', newProducts)
+            
+            resolve({
+                status: 'OK',
+                message: 'New products retrieved successfully',
+                data: newProducts
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+const getNewProductsNew = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Lấy 8 sản phẩm mới nhất
+            const newProducts = await Product.find().sort({ createdAt: -1 }).limit(25);
             // console.log('newProducts', newProducts)
             
             resolve({
@@ -454,5 +487,7 @@ module.exports = {
     getHighestPricedProducts, 
     getRandomProduct,
     getLowestPricedProducts,
-    getAllProductType
+    getAllProductType,
+    getSellingProductsNew,
+    getNewProductsNew,
 }

@@ -217,6 +217,28 @@ const getNewProducts = async (req, res) => {
         })
     }
 }
+const getSellingProductsNew = async (req, res) => {
+    try {
+        const response = await productService.getSellingProductsNew()
+        return res.status(200).json(response)
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+const getNewProductsNew = async (req, res) => {
+    try {
+        const response = await productService.getNewProductsNew()
+        return res.status(200).json(response)
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
 const getHighestPricedProducts = async (req, res) => {
     try {
         const response = await productService.getHighestPricedProducts()
@@ -280,5 +302,7 @@ module.exports = {
     getHighestPricedProducts, 
     getRandomProduct,
     getLowestPricedProducts,
-    getAllProductType
+    getAllProductType,
+    getNewProductsNew,
+    getSellingProductsNew
 }
