@@ -396,9 +396,52 @@ const getRandomProduct = () => {
         }
     });
 };
-   
+
+const getSearch = (name) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Loại bỏ dấu từ chuỗi tìm kiếm của người dùng
+            const searchName = removeDiacritics(name);
+
+            // Tìm tất cả sản phẩm
+            const allProducts = await Product.find({});
+            
+            // Lọc các sản phẩm khớp với chuỗi không dấu
+            const results = allProducts.filter(product => {
+                // Loại bỏ dấu từ tên sản phẩm trong cơ sở dữ liệu
+                const productName = removeDiacritics(product.name);
+                // Kiểm tra xem tên sản phẩm có chứa chuỗi tìm kiếm không
+                return productName.toLowerCase().includes(searchName.toLowerCase());
+            });
+
+            // console.log('results', results);  // Log kết quả tìm kiếm
+
+            if (!results || results.length === 0) {
+                resolve({
+                    status: 'OK',
+                    message: 'Không tìm thấy sản phẩm',
+                    data: results   
+                });
+            } else {
+                resolve({
+                    status: 'OK',
+                    message: 'Sản phẩm tìm kiếm được thành công',
+                    data: results
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+// Hàm loại bỏ dấu tiếng Việt
+const removeDiacritics = (str) => {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+};
 
 module.exports = {
+    getSearch,
     createProduct,
     updateProduct,
     getDetailsProduct,

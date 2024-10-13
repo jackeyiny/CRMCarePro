@@ -251,8 +251,23 @@ const getRandomProduct = async (req, res) => {
     }
 }
 
+const getSearch = async (req, res) => {
+    try {
+        const { name } = req.query
+        // console.log('name', name)
+        const response = await productService.getSearch(name)
+        return res.status(200).json(response)
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
 
 module.exports = {
+    getSearch,
     createProduct,
     updateProduct,
     getDetailsProduct,

@@ -13,6 +13,7 @@ router.post('/delete-many', AuthMiddleware, productController.deleteProductMany)
 router.get('/get-all-type', productController.getAllTypeProduct)
 router.get('/getAllProduct', productController.getAllProductType)
 
+router.get('/search', productController.getSearch)
 
 router.get('/get-selling-products', productController.getSellingProducts)
 router.get('/get-new-product', productController.getNewProducts)
