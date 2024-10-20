@@ -149,7 +149,6 @@ const createOrder = (newOrder) => {
                         message: 'Đặt hàng thành công'
                     });
                 } else {
-                    console.log('zo kong2222');
                     resolve({
                         status: 'ERR',
                         message: 'Lỗi khi tạo đơn hàng'
@@ -212,7 +211,6 @@ const UpdateOrderApp = (id, DeliveryStatus) => {
 
             // nếu giống thì thực hiện gọi tới hàm --findByIdAndUpdate-- chuyền id và data vào tiến hành update
             const updateOrder = await Order.findByIdAndUpdate(id, {DeliveryStatus:DeliveryStatus}, { new: true })
-            console.log('updateOrderupdateOrder', updateOrder)
             resolve({
                 status: 'OK',
                 message: 'SUCCESS',
@@ -240,7 +238,6 @@ const UpdateOrderApp1 = (id, cancellationStatus) => {
 
             // nếu giống thì thực hiện gọi tới hàm --findByIdAndUpdate-- chuyền id và data vào tiến hành update
             const updateOrder = await Order.findByIdAndUpdate(id, {cancellationStatus:cancellationStatus}, { new: true })
-            console.log('updateOrderupdateOrder', updateOrder)
             resolve({
                 status: 'OK',
                 message: 'SUCCESS',
