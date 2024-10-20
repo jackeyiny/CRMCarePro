@@ -70,6 +70,64 @@ const UpdateOrder = async (req, res) => {
         })
     }
 }
+const UpdateOrderApp = async (req, res) => {
+    try {
+        // nhận id từ url
+        const orderId = req.params.id
+        // dữ liệu gửi lên từ server
+        const DeliveryStatus = req.query.DeliveryStatus
+
+        // kiểm tra nếu ko lấy dx id
+        if(!orderId) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The product id is required'
+            })
+        }
+        // in ra để kiểm tra
+        // console.log('productId', productId)
+        // đóng gói dữ liệu cần update và id lấy từ url gửi qua service
+        const response = await orderService.UpdateOrderApp(orderId, DeliveryStatus)
+        // sau khi xử lý dữ liệu xong ta chuyển kiểu dữ liệu đã xử lý về --Json-- sau đó trả về
+        return res.status(200).json(response)
+
+
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+const UpdateOrderApp1 = async (req, res) => {
+    try {
+        // nhận id từ url
+        const orderId = req.params.id
+        // dữ liệu gửi lên từ server
+        const cancellationStatus = req.query.cancellationStatus
+
+        // kiểm tra nếu ko lấy dx id
+        if(!orderId) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The product id is required'
+            })
+        }
+        // in ra để kiểm tra
+        // console.log('productId', productId)
+        // đóng gói dữ liệu cần update và id lấy từ url gửi qua service
+        const response = await orderService.UpdateOrderApp1(orderId, cancellationStatus)
+        // sau khi xử lý dữ liệu xong ta chuyển kiểu dữ liệu đã xử lý về --Json-- sau đó trả về
+        return res.status(200).json(response)
+
+
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
 
 // lấy thông tin sản phẩm thông qua --_id--
 const getAllOrderDetail = async (req, res) => {
@@ -86,6 +144,32 @@ const getAllOrderDetail = async (req, res) => {
         }
         // đóng gói dữ liệu cần get và id lấy từ url gửi qua service
         const response = await orderService.getAllOrderDetail(userId)
+        // gửi dữ liệu đã xử lý xong đi
+        return res.status(200).json(response)
+
+
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+const getAllOrderDetailApp = async (req, res) => {
+    try {
+        // nhận id từ url
+        const userId = req.params.id
+        const type = req.query.type
+        // kiểm tra nếu ko lấy dx id
+        
+        if(!userId) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The userId id is required'
+            })
+        }
+        // đóng gói dữ liệu cần get và id lấy từ url gửi qua service
+        const response = await orderService.getAllOrderDetailApp(userId, type)
         // gửi dữ liệu đã xử lý xong đi
         return res.status(200).json(response)
 
@@ -189,5 +273,8 @@ module.exports = {
     getDetailsOrder,
     cancelOrderDetails,
     getAllOrder,
-    UpdateOrder
+    UpdateOrder,
+    getAllOrderDetailApp,
+    UpdateOrderApp,
+    UpdateOrderApp1
 }

@@ -195,6 +195,62 @@ const UpdateOrder = (id, data) => {
         }
     })
 }
+const UpdateOrderApp = (id, DeliveryStatus) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // check xem 2 id có giống nhau ko
+            const checkOrder = await Order.findOne({
+                _id: id
+            })
+            // nếu ko gióng thì in ra thông báo
+            if (checkOrder === null) {
+                resolve({
+                    status: 'ok',
+                    message: 'The product is not defined'
+                })
+            }
+
+            // nếu giống thì thực hiện gọi tới hàm --findByIdAndUpdate-- chuyền id và data vào tiến hành update
+            const updateOrder = await Order.findByIdAndUpdate(id, {DeliveryStatus:DeliveryStatus}, { new: true })
+            console.log('updateOrderupdateOrder', updateOrder)
+            resolve({
+                status: 'OK',
+                message: 'SUCCESS',
+                data: updateOrder
+            })
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+const UpdateOrderApp1 = (id, cancellationStatus) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // check xem 2 id có giống nhau ko
+            const checkOrder = await Order.findOne({
+                _id: id
+            })
+            // nếu ko gióng thì in ra thông báo
+            if (checkOrder === null) {
+                resolve({
+                    status: 'ok',
+                    message: 'The product is not defined'
+                })
+            }
+
+            // nếu giống thì thực hiện gọi tới hàm --findByIdAndUpdate-- chuyền id và data vào tiến hành update
+            const updateOrder = await Order.findByIdAndUpdate(id, {cancellationStatus:cancellationStatus}, { new: true })
+            console.log('updateOrderupdateOrder', updateOrder)
+            resolve({
+                status: 'OK',
+                message: 'SUCCESS',
+                data: updateOrder
+            })
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
 
 // in ra thông tin product theo id
 const getAllOrderDetail = (userId) => {
@@ -222,6 +278,54 @@ const getAllOrderDetail = (userId) => {
         }
     })
 }
+const getAllOrderDetailApp = (userId, type) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let orders;
+            switch (type) {
+                case 'Chờ xác nhận':
+                    orders = await Order.find({ user: userId, isDelivered: false, OrderConfirmation: false, DeliveryStatus: false, cancellationStatus: false });
+                    break;
+                case 'Chờ lấy hàng':
+                    orders = await Order.find({ user: userId, isDelivered: false, OrderConfirmation: true, DeliveryStatus: false, cancellationStatus: false });
+                    break;
+                case 'Chờ giao hàng':
+                    orders = await Order.find({ user: userId, isDelivered: true, OrderConfirmation: true, DeliveryStatus: false, cancellationStatus: false });
+                    break;
+                case 'Đã giao hàng':
+                    orders = await Order.find({ user: userId, isDelivered: true, OrderConfirmation: true, DeliveryStatus: true, cancellationStatus: false });
+                    break;
+                case 'Đã hủy':
+                    orders = await Order.find({ user: userId, cancellationStatus: true, });
+                    break;
+                case 'Trả lại':
+                    orders = await Order.find({ user: userId, returnStatus: true });
+                    break;
+                default:
+                    orders = await Order.find({ user: userId, returnStatus: true });
+                    break;
+            }
+
+            // nếu ko gióng thì in ra thông báo
+            if (orders === null) {
+                resolve({
+                    status: 'ok',
+                    message: 'The order is not defined'
+                })
+            }
+
+            resolve({
+                status: 'OK',
+                message: 'Get order Success',
+                data: orders
+            })
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+
 
 const getDetailsOrder = (userId) => {
     return new Promise(async (resolve, reject) => {
@@ -320,5 +424,8 @@ module.exports = {
     getDetailsOrder,
     cancelOrderDetails,
     getAllOrder,
-    UpdateOrder
+    UpdateOrder,
+    getAllOrderDetailApp,
+    UpdateOrderApp,
+    UpdateOrderApp1
 }

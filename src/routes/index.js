@@ -19,31 +19,31 @@ const routes = (app) => {
 
 
 
-// Đăng nhập và lấy token
-app.post('/api/login', (req, res) => {
-    const { username, password } = req.body;
-    // Thực hiện kiểm tra người dùng (ở đây là ví dụ đơn giản)
-    if (username === 'user' && password === 'password') {
-      const user = { name: username };
-      const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '1h' });
-      res.json({ token });
-    } else {
-      res.status(401).json({ message: 'Invalid credentials' });
-    }
-  });
+// // Đăng nhập và lấy token
+// app.post('/api/login', (req, res) => {
+//     const { username, password } = req.body;
+//     // Thực hiện kiểm tra người dùng (ở đây là ví dụ đơn giản)
+//     if (username === 'user' && password === 'password') {
+//       const user = { name: username };
+//       const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '1h' });
+//       res.json({ token });
+//     } else {
+//       res.status(401).json({ message: 'Invalid credentials' });
+//     }
+//   });
 
-// JWT Middleware
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (token == null) return res.sendStatus(401);
+// // JWT Middleware
+// function authenticateToken(req, res, next) {
+//     const authHeader = req.headers['authorization'];
+//     const token = authHeader && authHeader.split(' ')[1];
+//     if (token == null) return res.sendStatus(401);
   
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) return res.sendStatus(403);
-      req.user = user;
-      next();
-    });
-  }
+//     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+//       if (err) return res.sendStatus(403);
+//       req.user = user;
+//       next();
+//     });
+//   }
 
 //     // API lấy cấu hình giao diện
 // app.get('/api/config', authenticateToken, (req, res) => {

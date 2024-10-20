@@ -9,6 +9,7 @@ router.post('/create', orderController.createOrder)
 
 // lấy sản phẩm đã order theo id 
 router.get('/get-all-order/:id', orderController.getAllOrderDetail)
+router.post('/get-all-order-app/:id', orderController.getAllOrderDetailApp)
 
 router.get('/get-details-order/:id', orderController.getDetailsOrder)
 
@@ -17,5 +18,7 @@ router.delete('/cancel-order/:id', orderController.cancelOrderDetails)
 router.get('/get-all-order', AuthUserMiddleware, orderController.getAllOrder)
 
 router.put('/update-order/:id', orderController.UpdateOrder)
+router.put('/update-order-app/:id', orderController.UpdateOrderApp)
+router.put('/update-order-app1/:id', orderController.UpdateOrderApp1)
 
 module.exports = router

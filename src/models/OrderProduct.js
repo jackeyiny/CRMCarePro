@@ -38,10 +38,19 @@ const orderSchema = new mongoose.Schema({
     isPaid: { type: Boolean, default: false },
     // thời gian đặt hàng
     paidAt: { type: Date },
-    // trạng thái giao hàng hay chưa
-    isDelivered: { type: Boolean, default: false },
     // nơi giao hàng
     deliveredAt: { type: Date },
+
+    // trạng thái giao hàng hay chưa
+    isDelivered: { type: Boolean, default: false },
+    // Xác nhận đơn hàng
+    OrderConfirmation: { type: Boolean, default: false },
+    // Trạng thái đã nhận hàng chưa
+    DeliveryStatus: { type: Boolean, default: false },
+    // trạng thái hủy đơn
+    cancellationStatus: { type: Boolean, default: false },
+    // trạng thái trả về lại đơn hàng
+    returnStatus: { type: Boolean, default: false },
 },
     {
         timestamps: true,
