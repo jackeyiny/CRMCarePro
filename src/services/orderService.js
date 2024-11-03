@@ -9,7 +9,7 @@ const EmailService = require("../services/EmailService");
 
 //         // nhận những dữ liệu dx gửi qua từ phía client
 //         const { orderItems, paymentMethod, itemsPrice, shippingPrice, totalPrice, fullName, address, city, phone, user } = newOrder
-        
+
 //         try {
 //             const promises = orderItems.map(async (order) => {
 //                 // console.log('orderItems', {orderItems})
@@ -138,7 +138,7 @@ const createOrder = (newOrder) => {
                     shippingPrice,
                     totalPrice,
                     user: user,
-                    isPaid, 
+                    isPaid,
                     paidAt
                 });
 
@@ -155,7 +155,7 @@ const createOrder = (newOrder) => {
                     });
                 }
             }
-            
+
 
         } catch (e) {
             console.log('e', e);
@@ -210,7 +210,7 @@ const UpdateOrderApp = (id, DeliveryStatus) => {
             }
 
             // nếu giống thì thực hiện gọi tới hàm --findByIdAndUpdate-- chuyền id và data vào tiến hành update
-            const updateOrder = await Order.findByIdAndUpdate(id, {DeliveryStatus:DeliveryStatus}, { new: true })
+            const updateOrder = await Order.findByIdAndUpdate(id, { DeliveryStatus: DeliveryStatus }, { new: true })
             resolve({
                 status: 'OK',
                 message: 'SUCCESS',
@@ -237,7 +237,7 @@ const UpdateOrderApp1 = (id, cancellationStatus) => {
             }
 
             // nếu giống thì thực hiện gọi tới hàm --findByIdAndUpdate-- chuyền id và data vào tiến hành update
-            const updateOrder = await Order.findByIdAndUpdate(id, {cancellationStatus:cancellationStatus}, { new: true })
+            const updateOrder = await Order.findByIdAndUpdate(id, { cancellationStatus: cancellationStatus }, { new: true })
             resolve({
                 status: 'OK',
                 message: 'SUCCESS',
@@ -321,6 +321,30 @@ const getAllOrderDetailApp = (userId, type) => {
         }
     })
 }
+const getOrderNotificationApp = (userId, shippingStatus) => {
+    return new Promise(async (resolve, reject) => {
+        console.log('userId, shippingStatus', userId, shippingStatus);
+        try {
+            // check xem 2 id có giống nhau ko
+            const orders = await Order.find({ user: userId, shippingStatus: shippingStatus });
+            // nếu ko gióng thì in ra thông báo
+            if (orders === null) {
+                resolve({
+                    status: 'ok',
+                    message: 'The order is not defined'
+                })
+            }
+
+            resolve({
+                status: 'OK',
+                message: 'Get order Success',
+                data: orders
+            })
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
 
 
 
@@ -367,7 +391,7 @@ const cancelOrderDetails = (id) => {
                     message: 'The product is not defined'
                 })
             }
-            
+
             // console.log('order1111', order)
 
             resolve({
@@ -395,7 +419,7 @@ const getAllOrder = () => {
             reject(e)
         }
     })
-} 
+}
 
 
 const getAllTypeProduct = () => {
@@ -403,7 +427,7 @@ const getAllTypeProduct = () => {
         try {
             // tìm kiếm --1 trường duy nhất-- trong 1 product
             const allTypeProduct = await Product.distinct('type')
-            
+
             resolve({
                 status: 'OK',
                 message: 'allTypeProduct Success',
@@ -424,5 +448,6 @@ module.exports = {
     UpdateOrder,
     getAllOrderDetailApp,
     UpdateOrderApp,
-    UpdateOrderApp1
+    UpdateOrderApp1,
+    getOrderNotificationApp
 }

@@ -10,6 +10,7 @@ router.post('/create', orderController.createOrder)
 // lấy sản phẩm đã order theo id 
 router.get('/get-all-order/:id', orderController.getAllOrderDetail)
 router.post('/get-all-order-app/:id', orderController.getAllOrderDetailApp)
+router.post('/get-all-order-notification-app/:id', orderController.getOrderNotificationApp)
 
 router.get('/get-details-order/:id', orderController.getDetailsOrder)
 

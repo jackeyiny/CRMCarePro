@@ -181,6 +181,32 @@ const getAllOrderDetailApp = async (req, res) => {
         })
     }
 }
+const getOrderNotificationApp = async (req, res) => {
+    try {
+        // nhận id từ url
+        const userId = req.params.id
+        const shippingStatus = req.query.shippingStatus
+        // kiểm tra nếu ko lấy dx id
+        
+        if(!userId) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The userId id is required'
+            })
+        }
+        // đóng gói dữ liệu cần get và id lấy từ url gửi qua service
+        const response = await orderService.getOrderNotificationApp(userId, shippingStatus)
+        // gửi dữ liệu đã xử lý xong đi
+        return res.status(200).json(response)
+
+
+    } catch (e) {
+        // nếu ko có dữ liệu sẽ báo lỗi
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
 
 
 // lấy thông tin sản phẩm thông qua --_id--
@@ -276,5 +302,6 @@ module.exports = {
     UpdateOrder,
     getAllOrderDetailApp,
     UpdateOrderApp,
-    UpdateOrderApp1
+    UpdateOrderApp1,
+    getOrderNotificationApp
 }
