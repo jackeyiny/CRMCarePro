@@ -51,6 +51,8 @@ const orderSchema = new mongoose.Schema({
     cancellationStatus: { type: Boolean, default: false },
     // trạng thái trả về lại đơn hàng
     returnStatus: { type: Boolean, default: false },
+    // trạng thái shipping giao hàng cho khách chưa
+    shippingStatus: { type: Boolean, default: false },
 },
     {
         timestamps: true,

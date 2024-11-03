@@ -92,7 +92,6 @@ const routes = (app) => {
 //     res.json({ message: 'Secure data accessed' });
 //   });
 
-
 }
 
 module.exports = routes
