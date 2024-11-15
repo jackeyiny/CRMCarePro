@@ -21,7 +21,7 @@ const server = http.createServer(app);
 // Cấu hình CORS cho Socket.io
 const io = new Server(server, {
     cors: {
-        origin: process.env.HOST, // Thay đổi thành domain của bạn nếu cần
+        origin: [process.env.HOST, process.env.LOCAL], // Thay đổi thành domain của bạn nếu cần
         methods: ["GET", "POST", "PUT", "DELETE"],
         allowedHeaders: ["Content-Type"],
         credentials: true
@@ -30,7 +30,7 @@ const io = new Server(server, {
 
 // Middleware
 app.use(cors({
-    origin: process.env.HOST, // Thay đổi thành domain của bạn nếu cần
+    origin: [process.env.HOST, process.env.LOCAL], // Thay đổi thành domain của bạn nếu cần
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
