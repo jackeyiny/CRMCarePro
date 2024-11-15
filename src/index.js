@@ -109,43 +109,26 @@ io.on("connection", (socket) => {
 
     // lấy danh sách tin nhắn user
     socket.on('layDL', async () => {
-        // Tìm socket.id của người nhận và gửi tin nhắn cho họ
-        const recipientSocketId = users[usersName]; // messageData.to là username của người nhận
-        if (recipientSocketId) {
-            try {
-                const conversations = await Chat.aggregate([
-                    { $match: { isAdmin: false } }, // Lọc tin nhắn từ user gửi đến admin
-                    {
-                        $group: {
-                            _id: '$conversationId',
-                            lastMessage: { $last: '$messageContent' },
-                            lastMessageAt: { $last: '$createdAt' },
-                            senderId: { $first: '$senderId' },
-                            senderName: { $first: '$senderName' },
-                            senderImage: { $first: '$senderImage' },
-                            status: { $last: '$status' },
-                        },
+        try {
+            const conversations = await Chat.aggregate([
+                { $match: { isAdmin: false } }, // Lọc tin nhắn từ user gửi đến admin
+                {
+                    $group: {
+                        _id: '$conversationId',
+                        lastMessage: { $last: '$messageContent' },
+                        lastMessageAt: { $last: '$createdAt' },
+                        senderId: { $first: '$senderId' },
+                        senderName: { $first: '$senderName' },
+                        senderImage: { $first: '$senderImage' },
+                        status: { $last: '$status' },
                     },
-                    { $sort: { lastMessageAt: -1 } }, // Sắp xếp theo thời gian tin nhắn mới nhất
-                ]);
-                io.to(recipientSocketId).emit('DS_user', conversations);
-            } catch (e) {
-                reject(e);
-            }
-        } else {
-            console.log('Recipient not connected');
+                },
+                { $sort: { lastMessageAt: -1 } }, // Sắp xếp theo thời gian tin nhắn mới nhất
+            ]);
+            io.emit('DS_user', conversations);
+        } catch (e) {
+            reject(e);
         }
-
-        // Khi client ngắt kết nối
-        socket.on('disconnect', () => {
-            // Tìm và xóa user khi họ ngắt kết nối
-            for (let username in users) {
-                if (users[username] === socket.id) {
-                    delete users[username];
-                    break;
-                }
-            }
-        });
     });
 
     // dữ liệu message bên phía admin
