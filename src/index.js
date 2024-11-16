@@ -51,12 +51,28 @@ app.use(
 // Lưu trữ socket.id của từng user
 let users = {};
 // WebSocket xử lý sự kiện
+let firstUserId = '';
+let secondUserId = '';
 io.on("connection", (socket) => {
     let usersName = '';
     // Lưu socket.id của user và kết nối với username (hoặc id user, nếu cần)
     socket.on('register', (username) => {
         users[username] = socket.id;
         usersName = username
+    });
+
+    
+    // Lưu socket.id của user khi gửi tin 
+    socket.on('registeridUser', (idUserAdmin) => {
+        const [firstUserId1, secondUserId2] = idUserAdmin.split('-');
+        firstUserId = firstUserId1;
+        secondUserId = secondUserId2;
+    });
+
+    socket.on('DkIdUser', (userId, name) => {
+        users[userId] = socket.id; // Lưu chính xác socket.id
+        const loichao = `Chào mừng bạn trở lại, ${name}`;
+        io.to(users[userId]).emit('LoiChao', loichao);
     });
 
     // gửi tin phía user
@@ -73,10 +89,22 @@ io.on("connection", (socket) => {
                 status: 'unread',
             });
             const result = await newMessage.save();
-            io.emit('newMessage', result);
+            const firstUserSocket = users[firstUserId];
+            const secondUserSocket = users[secondUserId];
+            io.emit('newMessage1', result);
+            if (firstUserSocket) {
+                // io.to(firstUserSocket).emit('newMessage1', result);
+            } else {
+                console.log(`User ${firstUserId} is not connected yet.`);
+            }
+            if (secondUserSocket) {
+                // io.to(secondUserSocket).emit('newMessage1', result);
+            } else {
+                console.log(`User ${secondUserId} is not connected yet.`);
+            }
 
         } catch (e) {
-            reject(e);
+            // reject(e);
         }
     });
 
@@ -95,16 +123,7 @@ io.on("connection", (socket) => {
             console.log('Recipient not connected');
         }
 
-        // Khi client ngắt kết nối
-        socket.on('disconnect', () => {
-            // Tìm và xóa user khi họ ngắt kết nối
-            for (let username in users) {
-                if (users[username] === socket.id) {
-                    delete users[username];
-                    break;
-                }
-            }
-        });
+        
     });
 
     // lấy danh sách tin nhắn user
@@ -136,16 +155,7 @@ io.on("connection", (socket) => {
             console.log('Recipient not connected');
         }
 
-        // Khi client ngắt kết nối
-        socket.on('disconnect', () => {
-            // Tìm và xóa user khi họ ngắt kết nối
-            for (let username in users) {
-                if (users[username] === socket.id) {
-                    delete users[username];
-                    break;
-                }
-            }
-        });
+        
     });
 
     // dữ liệu message bên phía admin
@@ -178,17 +188,15 @@ io.on("connection", (socket) => {
             console.log('Recipient not connected');
         }
 
-        // Khi client ngắt kết nối
-        socket.on('disconnect', () => {
-            // Tìm và xóa user khi họ ngắt kết nối
-            for (let username in users) {
-                if (users[username] === socket.id) {
-                    delete users[username];
-                    break;
-                }
-            }
-        });
+       
     });
+
+    // socket.on('disconnect', () => {
+    //     if (userId) {
+    //         delete users[userId]; // Xóa user khỏi danh sách khi ngắt kết nối
+    //         console.log(`User disconnected: ${userId}`);
+    //     }
+    // });
 });
 
 // Kết nối MongoDB

@@ -323,7 +323,7 @@ const getAllOrderDetailApp = (userId, type) => {
 }
 const getOrderNotificationApp = (userId, shippingStatus) => {
     return new Promise(async (resolve, reject) => {
-        console.log('userId, shippingStatus', userId, shippingStatus);
+        // console.log('userId, shippingStatus', userId, shippingStatus);
         try {
             // check xem 2 id có giống nhau ko
             const orders = await Order.find({ user: userId, shippingStatus: shippingStatus });
