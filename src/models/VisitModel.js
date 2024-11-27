@@ -9,6 +9,7 @@ const visitSchema = new mongoose.Schema({
     visits: { type: Number, default: 0 }, // Số lượt truy cập
     totalDuration: { type: Number, default: 0 }, // Tổng thời gian ở lại trang (tính bằng giây)
     averageDuration: { type: Number, default: 0 }, // Thời gian trung bình ở lại trang
+    date: { type: Date, required: true },  // Lưu trữ ngày mà người dùng truy cập
 });
 
 const Visit = mongoose.model("Visit", visitSchema);
