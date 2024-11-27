@@ -10,6 +10,8 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const Chat = require("./models/ChatModel");
 
+const requestIp = require('request-ip');
+
 dotenv.config();
 
 const app = express();
@@ -27,6 +29,8 @@ const io = new Server(server, {
         credentials: true
     }
 });
+// lấy địa chỉ ip
+app.use(requestIp.mw()); // Middleware để lấy IP từ yêu cầu
 
 // Middleware
 app.use(cors({

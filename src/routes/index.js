@@ -4,6 +4,7 @@ const OrderRouter = require('./OrderRouter')
 const CommentRouter = require('./CommentRouter')
 const PaymentRouter = require('./PaymentRouter')
 const SliderRouter = require('./SliderRouter')
+const NumberOfVisits = require('./NumberOfVisits')
 
 // const jwt = require('jsonwebtoken')
 
@@ -15,6 +16,7 @@ const routes = (app) => {
     app.use('/api/comment', CommentRouter)
     app.use('/api/payment', PaymentRouter)
     app.use('/api/slider', SliderRouter)
+    app.use('/api/nov', NumberOfVisits)
 }
 
 module.exports = routes
