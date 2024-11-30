@@ -7,7 +7,7 @@ const orderService = require('../services/orderService')
 const createOrder = async (req, res) => {
     try {
         // console.log('req.body', req.body)
-        
+
         // nhận những dữ liệu dx gửi qua từ phía client
         const { orderItems, paymentMethod, itemsPrice, shippingPrice, totalPrice, fullName, address, city, phone, email } = req.body
 
@@ -16,7 +16,7 @@ const createOrder = async (req, res) => {
 
         // kiểm tra xem nếu mà nó ko có 1 trong những thằng này
         // if(!paymentMethod || !itemsPrice || !shippingPrice || !totalPrice || !fullName || !address || !city || !phone || !email) {
-        if(!paymentMethod || !itemsPrice || !fullName || !address || !city || !phone || !email) {
+        if (!fullName || !address || !city || !phone || !email) {
             // trả về 1 thông báo lỗi khi ko nhận dx 1 cái nào đó
             return res.status(200).json({
                 status: 'ERR',
@@ -24,13 +24,13 @@ const createOrder = async (req, res) => {
             })
         }
 
-        
+
         // nhận dữ liệu từ ProductRouter.js sau đó sẽ truyền dữ liệu nhận đx vào ProductService để xử lý
         const response = await orderService.createOrder(req.body)
         // sau khi xử lý dữ liệu xong ta chuyển kiểu dữ liệu đã xử lý về --Json-- sau đó trả về
         return res.status(200).json(response)
 
-        
+
     } catch (e) {
         // nếu ko có dữ liệu sẽ báo lỗi
         return res.status(404).json({
@@ -49,7 +49,7 @@ const UpdateOrder = async (req, res) => {
         const data = req.body
 
         // kiểm tra nếu ko lấy dx id
-        if(!orderId) {
+        if (!orderId) {
             return res.status(200).json({
                 status: 'ERR',
                 message: 'The product id is required'
@@ -78,7 +78,7 @@ const UpdateOrderApp = async (req, res) => {
         const DeliveryStatus = req.query.DeliveryStatus
 
         // kiểm tra nếu ko lấy dx id
-        if(!orderId) {
+        if (!orderId) {
             return res.status(200).json({
                 status: 'ERR',
                 message: 'The product id is required'
@@ -107,7 +107,7 @@ const UpdateOrderApp1 = async (req, res) => {
         const cancellationStatus = req.query.cancellationStatus
 
         // kiểm tra nếu ko lấy dx id
-        if(!orderId) {
+        if (!orderId) {
             return res.status(200).json({
                 status: 'ERR',
                 message: 'The product id is required'
@@ -136,7 +136,7 @@ const getAllOrderDetail = async (req, res) => {
         const userId = req.params.id
         // console.log('productId: ', userId)
         // kiểm tra nếu ko lấy dx id
-        if(!userId) {
+        if (!userId) {
             return res.status(200).json({
                 status: 'ERR',
                 message: 'The userId id is required'
@@ -161,8 +161,8 @@ const getAllOrderDetailApp = async (req, res) => {
         const userId = req.params.id
         const type = req.query.type
         // kiểm tra nếu ko lấy dx id
-        
-        if(!userId) {
+
+        if (!userId) {
             return res.status(200).json({
                 status: 'ERR',
                 message: 'The userId id is required'
@@ -187,8 +187,8 @@ const getOrderNotificationApp = async (req, res) => {
         const userId = req.params.id
         const shippingStatus = req.query.shippingStatus
         // kiểm tra nếu ko lấy dx id
-        
-        if(!userId) {
+
+        if (!userId) {
             return res.status(200).json({
                 status: 'ERR',
                 message: 'The userId id is required'
@@ -216,7 +216,7 @@ const getDetailsOrder = async (req, res) => {
         const userId = req.params.id
         // console.log('userId: ', userId)
         // kiểm tra nếu ko lấy dx id
-        if(!userId) {
+        if (!userId) {
             return res.status(200).json({
                 status: 'ERR',
                 message: 'The userId id is required'
@@ -243,7 +243,7 @@ const cancelOrderDetails = async (req, res) => {
         const orderId = req.params.id
         // console.log('121212  : ', orderId)
         // kiểm tra nếu ko lấy dx id
-        if(!orderId) {
+        if (!orderId) {
             return res.status(200).json({
                 status: 'ERR',
                 message: 'The productId id is required'
