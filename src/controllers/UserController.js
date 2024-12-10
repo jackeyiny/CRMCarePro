@@ -13,7 +13,7 @@ const checkEmailSignUp = async (req, res) => {
         const reg = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
         const isCheckEmail = reg.test(email)
 
-        if(email && name && !OK) {
+        if(email && name && OK) {
             if (!isCheckEmail) {
                 return res.status(200).json({
                     status: 'OK',
@@ -25,7 +25,7 @@ const checkEmailSignUp = async (req, res) => {
                     message: 'The input is name'
                 })
             } 
-        } else if(email && name && OK) {
+        } else if(email && name && !OK) {
             if (!isCheckEmail) {
                 return res.status(200).json({
                     status: 'ERR_email',
@@ -50,7 +50,7 @@ const checkOTPSignUp = async (req, res) => {
     try {
         const { otp, token, email, name, OK } = req.body
         // console.log('req.body', req.body)
-        if(email && name && token && otp && !OK) {
+        if(email && name && token && otp && OK) {
             if(!token || !otp || !email || !name) {
                 return res.status(200).json({
                     status: 'OK',
@@ -78,7 +78,7 @@ const checkOTPSignUp = async (req, res) => {
                     message: 'Invalid otp'
                 })
             } 
-        } else if(email && name && token && otp && OK) {
+        } else if(email && name && token && otp && !OK) {
             if(!token || !otp || !email || !name) {
                 return res.status(200).json({
                     status: 'ERR_all',

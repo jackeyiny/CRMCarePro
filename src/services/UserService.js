@@ -18,7 +18,7 @@ const checkEmailSignUp = (emailUser) => {
             // Kiểm tra xem email đã tồn tại hay chưa
             const user = await User.findOne({ email: email });
 
-            if(email && name && !OK) {
+            if (email && name && OK) {
                 if (user !== null) {
                     resolve({
                         status: 'OK',
@@ -26,7 +26,7 @@ const checkEmailSignUp = (emailUser) => {
                     });
                     return;
                 }
-            } else if(email && name && OK) {
+            } else if (email && name && !OK) {
                 if (user !== null) {
                     resolve({
                         status: 'ERR',
@@ -35,7 +35,7 @@ const checkEmailSignUp = (emailUser) => {
                     return;
                 }
             }
-            
+
 
             // Tạo mã OTP ngẫu nhiên
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -66,7 +66,7 @@ const checkOTPSignUp = (newUser) => {
             // console.log('Decoded OTP:', decoded.otp);
             // console.log('User entered OTP:', otp);
 
-            if(email && name && token && otp && !OK) {
+            if (email && name && token && otp && OK) {
                 // Kiểm tra xem OTP có đúng và không hết hạn không
                 // console.log('decoded.otp === otp', decoded.otp === otp)
                 if (decoded.otp === otp) {
@@ -77,10 +77,10 @@ const checkOTPSignUp = (newUser) => {
                 } else {
                     resolve({
                         status: 'OK',
-                        message: 'Invalid OTP'
+                        message: 'OTP Không Hợp Lệ'
                     });
                 }
-            } else if(email && name && token && otp && OK) {
+            } else if (email && name && token && otp && !OK) {
                 // Kiểm tra xem OTP có đúng và không hết hạn không
                 if (decoded.otp === otp) {
                     resolve({
@@ -88,19 +88,20 @@ const checkOTPSignUp = (newUser) => {
                         message: 'OTP verified successfully'
                     });
                 } else {
+                    console.log('otp', otp)
                     resolve({
                         status: 'ERR',
-                        message: 'Invalid OTP'
+                        message: 'OTP Không Hợp Lệ'
                     });
                 }
             }
         } catch (e) {
-            if(email && name && token && otp && !OK) {
+            if (email && name && token && otp && !OK) {
                 reject({
                     status: 'OK',
                     message: 'Token is invalid or expired'
                 });
-            } else if(email && name && token && otp && OK) {
+            } else if (email && name && token && otp && OK) {
                 reject({
                     status: 'ERR',
                     message: 'Token is invalid or expired'
@@ -111,19 +112,19 @@ const checkOTPSignUp = (newUser) => {
 };
 const createUser = (newUser) => {
     return new Promise(async (resolve, reject) => {
-        const {email, password, confirmPassword, token, otp, name} = newUser
+        const { email, password, confirmPassword, token, otp, name } = newUser
         try {
             const checkUser = await User.findOne({
                 email: email
             })
             // check xem thử nếu == null thì chưa tồn tại trọng database
             // còn nếu khác null thì đã tồn tại rồi
-                /* 
-                resolve({
-                    data: checkUser
-                })
-                */
-            if(checkUser !== null) {
+            /* 
+            resolve({
+                data: checkUser
+            })
+            */
+            if (checkUser !== null) {
                 resolve({
                     status: 'ERR',
                     message: 'The Email is already'
@@ -132,7 +133,7 @@ const createUser = (newUser) => {
             // mã hóa passwork
             // const hash = bcrypt.hashSync(password, 10)
             // console.log('hash', hash)   
-            
+
             // const decoded = jwt.verify(token, secret);
 
             // // Kiểm tra xem OTP có đúng và không hết hạn không
@@ -153,7 +154,7 @@ const createUser = (newUser) => {
                 name,
                 email,
                 // mình lưu cái password đã mã hóa vào 
-                password: password, 
+                password: password,
                 // password: hash, 
 
                 // này ko cẩn thiệt lưu
@@ -161,7 +162,7 @@ const createUser = (newUser) => {
             })
             // console.log('createUser', createUser)
             // nếu tồn tại createUser thì sẽ thực hiện thông báo thành công và trả về data
-            if(createUser) {
+            if (createUser) {
                 resolve({
                     status: 'OK',
                     message: 'SUCCESS',
@@ -169,7 +170,7 @@ const createUser = (newUser) => {
                     data: createUser
                 })
             }
-            
+
         } catch (e) {
             reject(e)
         }
@@ -179,7 +180,7 @@ const createUser = (newUser) => {
 // làm như này nó sẽ tự động thêm lên database cho mình
 const loginUser = (userLogin) => {
     return new Promise(async (resolve, reject) => {
-        const {email, password, OK} = userLogin
+        const { email, password, OK } = userLogin
         // console.log('password', password)
 
         try {
@@ -188,22 +189,22 @@ const loginUser = (userLogin) => {
             })
             // check xem thử nếu === null thì chưa tồn tại trọng database
             // còn nếu khác null thì đã tồn tại rồi
-                /* 
-                resolve({
-                    data: checkUser
-                })
-                */
+            /* 
+            resolve({
+                data: checkUser
+            })
+            */
             //    console.log('checkUser', checkUser)
-            if(!OK && email && password){
-                if(checkUser === null) {
+            if (!OK && email && password) {
+                if (checkUser === null) {
                     resolve({
                         status: 'OK',
                         // thông báo tài khoảng chưa tồn tại
                         message: 'The user is not defined'
                     })
                 }
-            } else if(email && password && OK) {
-                if(checkUser === null) {
+            } else if (email && password && OK) {
+                if (checkUser === null) {
                     resolve({
                         status: 'ERR',
                         // thông báo tài khoảng chưa tồn tại
@@ -211,7 +212,7 @@ const loginUser = (userLogin) => {
                     })
                 }
             }
-            if(checkUser === null) {
+            if (checkUser === null) {
                 resolve({
                     status: 'ERR',
                     // thông báo tài khoảng chưa tồn tại
@@ -226,7 +227,7 @@ const loginUser = (userLogin) => {
             //         message: 'The password or user is incorrect'
             //     })
             // }
-            
+
             // ta sẽ cung cấp --access_token-- khi --login-- vào trang web
             // cài này dùng để giới giạn thời gian đang nhập là --1H-- 
             const access_token = await genneralAccessToken({
@@ -252,7 +253,7 @@ const loginUser = (userLogin) => {
                 access_token,
                 refresh_token
             })
-            
+
         } catch (e) {
             reject(e)
         }
@@ -388,13 +389,13 @@ const checkDetailsUserByEmail = (emailUser) => {
         try {
             // chuyển cái email gửi từ client lên với kiểu string
             // sau đó chuyển sang email
-            const emailUser1 = emailUser.email; 
+            const emailUser1 = emailUser.email;
 
             // check xem 2 id có giống nhau ko
             const user = await User.findOne({
                 email: emailUser1
             })
-            
+
             // console.log('user', user)
             // nếu ko gióng thì in ra thông báo
             if (!user) {
@@ -403,25 +404,25 @@ const checkDetailsUserByEmail = (emailUser) => {
                     status: 'ERR',
                     message: 'The user is not defined'
                 })
-            } 
-            
+            }
+
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
             const otpExpiry = new Date(Date.now() + 5 * 30 * 1000); // OTP hết hạn sau 30 giây
-    
+
             // lưu otp cũng như thời gian hết hạn
             user.otp = otp;
             user.otpExpiry = otpExpiry;
             await user.save();
-    
+
             // gọi tới gửi mã otp đến email
             await sendOtpEmail(emailUser1, otp);
-    
+
             resolve({
                 status: 'OK',
                 message: 'OTP sent successfully',
                 data: user
             });
-            
+
         } catch (e) {
             reject(e)
         }
@@ -432,13 +433,13 @@ const checkDetailsUserByEmailApp = (emailUser) => {
         try {
             // chuyển cái email gửi từ client lên với kiểu string
             // sau đó chuyển sang email
-            const emailUser1 = emailUser.email; 
+            const emailUser1 = emailUser.email;
 
             // check xem 2 id có giống nhau ko
             const user = await User.findOne({
                 email: emailUser1
             })
-            
+
             // console.log('user', user)
             // nếu ko gióng thì in ra thông báo
             if (!user) {
@@ -447,25 +448,25 @@ const checkDetailsUserByEmailApp = (emailUser) => {
                     status: 'OK',
                     message: 'The user is not defined'
                 })
-            } 
-            
+            }
+
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
             const otpExpiry = new Date(Date.now() + 5 * 30 * 1000); // OTP hết hạn sau 30 giây
-    
+
             // lưu otp cũng như thời gian hết hạn
             user.otp = otp;
             user.otpExpiry = otpExpiry;
             await user.save();
-    
+
             // gọi tới gửi mã otp đến email
             await sendOtpEmail(emailUser1, otp);
-    
+
             resolve({
                 status: 'OK',
                 message: 'SUCCESS',
                 data: user
             });
-            
+
         } catch (e) {
             reject(e)
         }
@@ -478,7 +479,7 @@ const checkDetailsUserByOTP = (otpAndPassword) => {
             // const emailUser = email.email; 
             const user = await User.findOne({ email: email });
 
-            if(otp && user && !OK) {
+            if (otp && user && !OK) {
                 // Check if the user exists
                 if (!user) {
                     resolve({
@@ -496,7 +497,7 @@ const checkDetailsUserByOTP = (otpAndPassword) => {
                     });
                     return;
                 }
-            } else if(otp && user && OK) {
+            } else if (otp && user && OK) {
                 // Check if the user exists
                 if (!user) {
                     resolve({
@@ -546,7 +547,7 @@ const ChangePassword = (newChangePassword) => {
             }
 
             // const hashedPassword = await bcrypt.hash(anewpassword, 10);
-            if(anewpassword) {
+            if (anewpassword) {
                 if (user.otp !== otp || user.otpExpiry < Date.now()) {
                     resolve({
                         status: 'ERR',
@@ -563,7 +564,7 @@ const ChangePassword = (newChangePassword) => {
                     });
                     return;
                 }
-                if(password === passwordRetrieval) {
+                if (password === passwordRetrieval) {
                     user.password = password;
                 }
             }
@@ -571,7 +572,7 @@ const ChangePassword = (newChangePassword) => {
             user.otpExpiry = null;
             await user.save();
 
-            
+
             // If OTP is valid and not expired, resolve with user data
             resolve({
                 status: 'OK',
