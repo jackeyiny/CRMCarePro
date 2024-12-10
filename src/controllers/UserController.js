@@ -125,6 +125,12 @@ const createUser = async (req, res) => {
         const { email, token, otp, password, confirmPassword, name } = req.body
         // console.log('req.body', req.body)
 
+        if (password !== confirmPassword) {
+            return res.status(200).json({
+                status: 'ERR_MK',
+                message: 'Mật Khẩu Không Trùng Khớp'
+            })
+        } 
 
         const response = await userService.createUser(req.body)
         // sau khi xử lý dữ liệu xong ta chuyển kiểu dữ liệu đã xử lý về --Json-- sau đó trả về
