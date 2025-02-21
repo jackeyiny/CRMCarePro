@@ -7,7 +7,7 @@ const createUser = async (req, res) => {
         // console.log(req.body)
 
         // nhận những dữ liệu dx gửi qua từ phía client
-        const { email, password, confirmPassword } = req.body
+        const { email, password, confirmPassword, name } = req.body
         console.log('req.body', req.body)
 
         // kiểm tra mk và nhập lại mk có giống ko nếu ko trả về lỗi
