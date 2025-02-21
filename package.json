@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --timeout 10000 --recursive src/test/get_all.js",
-    "start": "nodemon src/index.js"
+    "start": "node src/index.js"
   },
   "author": "",
   "license": "ISC",
