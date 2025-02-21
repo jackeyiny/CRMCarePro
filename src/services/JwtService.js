@@ -7,7 +7,7 @@ dotenv.config()
 
 // thời gian truy cập vào trang web
 const genneralAccessToken = async (payload) => {
-    // console.log('payload', payload)
+    console.log('payload', payload)
     // nhận vào cái key sitrick gì đó: access_token
     // expiresIn: thời gian cái token hết hạn
     const access_token = jws.sign({
