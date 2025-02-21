@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --timeout 10000 --recursive src/test/get_all.js",
-    "start": "node src/index.js",
-    "build": "cross-env NODE_ENV=production babel-node src/index.js",
+    "start": "node src/index.js"
   },
   "author": "",
   "license": "ISC",
