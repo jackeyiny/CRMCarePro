@@ -9,7 +9,7 @@ require('dotenv').config();
 
 const createUser = (newUser) => {
     return new Promise(async (resolve, reject) => {
-        const { email, password, confirmPassword } = newUser
+        const { email, password, confirmPassword, name } = newUser
         console.log('newUser', newUser)
         try {
             const checkUser = await User.findOne({
