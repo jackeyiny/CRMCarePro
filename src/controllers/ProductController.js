@@ -1,8 +1,21 @@
 const ProductService = require("../services/ProductService");
-
+const { uploadImage } = require('../untils/uploadImage');
 const createProduct = async (req, res) => {
+    console.log("Creating", req);
     try {
-        const response = await ProductService.createProduct(req.body);
+    
+        let imageUrl;
+        
+        if (req.file) {
+            // Upload ảnh lên Cloudinary và lấy URL
+            imageUrl = await uploadImage(req.file.path);
+        }
+        const ProductData={
+            name:req.body.name,
+            description:req.body.description,
+            image:imageUrl
+        }
+        const response = await ProductService.createProduct(ProductData);
         return res.status(201).json(response);
     } catch (e) {
         return res.status(500).json({
