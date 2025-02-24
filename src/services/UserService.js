@@ -33,6 +33,7 @@ const createUser = (newUser) => {
                 email,
                 // mình lưu cái password đã mã hóa vào 
                 password: hash,
+                name,
             })
 
             console.log('createUser', createUser)
